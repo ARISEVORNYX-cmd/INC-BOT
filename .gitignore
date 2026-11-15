@@ -10,6 +10,7 @@ bot/giveaways.json
 bot/afk.json
 bot/chatbot_channels.json
 bot/levels.json
+bot/level_channels.json
 bot/tickets.json
 bot/reminders.json
 bot/economy.json
@@ -17,3 +18,23 @@ bot/automod.json
 bot/welcome_off.json
 bot/warnings.json
 bot/profile_done.json
+
+# Level-3 agent team runtime state (generated, not committed)
+agents/runs/
+agent-team-result.json
+
+# Google Drive source archives and generated copy-only upgrade ZIPs (never commit ZIPs)
+google_drive/
+
+# Private agency memory/runtime state
+agency/.runtime/
+
+# Drive AI connector / generated upgrade artifacts
+AI-Agency-Connector.zip
+AI-Agency-All-Repos-Manifest.json
+dist/
+
+# Node dependencies and local provider secrets
+node_modules/
+.env.local
+.env.*.local

@@ -513,6 +513,7 @@ _HELP_CATEGORIES={
     "mod": ("🛡️", "Mod & Protect", "🛡️ Mod & Protect Commands",
         "**/mod** — Clear, Purge, Slowmode, Lock/Unlock, Kick, Ban, Unban, Timeout, Warn, Warnings, Roles, Nickname, Lockdown, Quarantine, Nuke, Report (All Nuke sirf owner)\n\n"
         "**/server** → **Settings** — Welcome, AntiLink, AntiSpam, BadWords, AntiRaid, AntiNuke (Status/On/Off)\n"
+        "**/levelchannel** — choose a channel for XP/level-up notices\n"
         "**/server** → **Auto Role / Bad Words / Mod Log / AntiNuke Trust / Reports / Scrims** — server ka baaki saara kaam bhi yahi"),
     "economy": ("💰", "Economy", "💰 Economy Commands",
         "**/economy** — Balance, Daily, Pay, Gamble, Rank, Leaderboard, **Giveaway**\n\n"
@@ -533,7 +534,8 @@ _HELP_CATEGORIES={
         "🌸 **Auto-Welcome default ON hai** — setup nahi chahiye. Control: **/server → Welcome**, aur naye member ka role: **/server → Auto Role**\n\n"
         "**/tickets** — Open, Close, Panel (HELP / BUG REPORT / IDEA)\n"
         "**/message** — Say, Announce, DM, Poll, Suggest\n"
-        "**/server** — Stats, Icon, Emojis, Channels, Boosts, Owner, Settings, Badge, Reports, Scrims"),
+        "**/server** — Stats, Icon, Emojis, Channels, Boosts, Owner, Settings, Badge, Reports, Scrims\n"
+        "**/levelchannel** — select a channel for XP/level-up notifications"),
 }
 
 def _help_home_embed() -> discord.Embed:
@@ -2444,6 +2446,26 @@ def _load_levels() -> dict:
     except Exception:
         return {}
 _levels: dict = _load_levels()
+_LEVEL_CHANNELS_FILE = Path(__file__).resolve().parent / "level_channels.json"
+def _load_level_channels() -> dict[str, int]:
+    try:
+        data=json.loads(_LEVEL_CHANNELS_FILE.read_text(encoding="utf-8"))
+        if not isinstance(data, dict): return {}
+        result={}
+        for guild_id, channel_id in data.items():
+            try:
+                result[str(int(guild_id))]=int(channel_id)
+            except (TypeError, ValueError):
+                continue
+        return result
+    except Exception:
+        return {}
+_level_channels: dict[str, int] = _load_level_channels()
+def _save_level_channels():
+    try:
+        _LEVEL_CHANNELS_FILE.write_text(json.dumps(_level_channels), encoding="utf-8")
+    except Exception:
+        log.warning("level channel settings save fail\n%s", traceback.format_exc())
 def _save_levels():
     try:
         _LEVELS_FILE.write_text(json.dumps(_levels), encoding="utf-8")
@@ -2473,9 +2495,62 @@ async def _award_xp(message: discord.Message):
     _save_levels()
     new_level, _, _=_level_progress(int(rec["xp"]))
     if new_level > old_level:
+        text=f"🎉 Congratulations {message.author.mention}! You reached **Level {new_level}** ⭐\nUse `/economy` → **Rank** to see your progress."
+        target_channel=None
+        channel_id=_level_channels.get(gid)
+        if channel_id:
+            try:
+                resolver=getattr(message.guild, "get_channel_or_thread", None) or getattr(message.guild, "get_channel", None)
+                target_channel=resolver(int(channel_id)) if resolver else None
+            except Exception:
+                target_channel=None
+        if target_channel is None:
+            target_channel=message.channel
+            if channel_id:
+                log.warning("level-up channel %s missing in guild %s; using source channel", channel_id, gid)
         try:
-            await message.channel.send(f"🎉 Congratulations {message.author.mention}! You reached **Level {new_level}** ⭐\nUse `/economy` → **Rank** to see your progress.")
-        except Exception: pass
+            await target_channel.send(text)
+        except Exception:
+            log.warning("level-up notice failed in target channel (guild %s)", gid)
+            if target_channel is not message.channel:
+                try: await message.channel.send(text)
+                except Exception: pass
+
+@bot.tree.command(name="levelchannel", description="Choose where XP/level-up announcements are sent")
+@app_commands.describe(channel="Select a channel; leave blank to check the current destination", mode="Optional: Status or turn announcements Off")
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Status — show current destination", value="status"),
+    app_commands.Choice(name="Off — keep notices where XP is earned", value="off"),
+])
+async def levelchannel_cmd(interaction: discord.Interaction, channel: discord.TextChannel = None, mode: app_commands.Choice[str] = None):
+    """Select a per-server channel for XP level-up notices; other bot messages are unaffected."""
+    guild=interaction.guild
+    if guild is None:
+        await interaction.response.send_message("❌ Level-up channel only works inside a server.", ephemeral=True); return
+    gid=str(guild.id)
+    action=getattr(mode, "value", mode) or ("set" if channel else "status")
+    if action in ("set", "off") and not _is_mod(interaction):
+        await _deny(interaction); return
+    if action == "set":
+        if channel is None:
+            await interaction.response.send_message("❌ Select the **channel** where only XP/level-up announcements should go.", ephemeral=True); return
+        me=getattr(guild, "me", None)
+        permissions_for=getattr(channel, "permissions_for", None)
+        if me is not None and callable(permissions_for):
+            try:
+                if not getattr(permissions_for(me), "send_messages", False):
+                    await interaction.response.send_message(f"❌ I can't send messages in {channel.mention}. Give me **View Channel** and **Send Messages** permission there.", ephemeral=True); return
+            except Exception:
+                pass
+        _level_channels[gid]=int(channel.id); _save_level_channels()
+        await interaction.response.send_message(f"✅ Sirf XP/level-up announcements {channel.mention} mein jayengi; baaki bot messages apne normal channels mein rahenge. `/levelchannel mode:Off` se wapas badal sakte ho.", ephemeral=True); return
+    if action == "off":
+        _level_channels.pop(gid, None); _save_level_channels()
+        await interaction.response.send_message("✅ Level-up notices ab XP earn karne wale channel mein hi jayengi.", ephemeral=True); return
+    channel_id=_level_channels.get(gid)
+    resolver=getattr(guild, "get_channel_or_thread", None) or getattr(guild, "get_channel", None)
+    target=resolver(int(channel_id)) if channel_id and resolver else None
+    await interaction.response.send_message(f"📢 Level-up announcement channel: {target.mention if target else '**not set**'}\nChannel choose karne ke liye `/levelchannel channel:#channel` use karo; bina options current status dikhata hai.", ephemeral=True)
 
 async def rank_cmd(interaction: discord.Interaction, member: discord.Member = None):
     if interaction.guild is None:
@@ -6406,6 +6481,22 @@ async def start_http_server():
     runner=web.AppRunner(app); await runner.setup()
     site=web.TCPSite(runner,"0.0.0.0",HTTP_PORT); await site.start()
     log.info("HTTP server chalu (port %s)", HTTP_PORT)
+
+# ---- Level-3 Agent Team (optional, safe by default) ----
+# Portable `agents/` package ko Discord se bhi chalane ka adapter.
+# AGENT_TEAM_ENABLED=1 tabhi /team register hogi; default band hai.
+# Risky tools deny mode me hain — command repo edit / message bhejne se pehle rukti hai.
+if os.environ.get("AGENT_TEAM_ENABLED", "0") == "1":
+    try:
+        import sys as _agent_sys
+        _agent_repo_root = Path(__file__).resolve().parent.parent
+        if str(_agent_repo_root) not in _agent_sys.path:
+            _agent_sys.path.insert(0, str(_agent_repo_root))
+        from agents.adapters.discord_adapter import register_agent_team
+        register_agent_team(bot, owner_id=BOT_OWNER_ID)
+        log.info("Level-3 agent team /team command registered")
+    except Exception as _agent_err:
+        log.warning("agent team register fail: %s", _agent_err)
 
 def main():
     if not TOKEN: raise SystemExit("DISCORD_BOT_TOKEN is not set. Put it in the .env file.")

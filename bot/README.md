@@ -54,6 +54,12 @@ curl -X POST https://YOUR_SERVER:8080/github \
 - Naya jo tune abhi bheja: `1561388086745899058` (`Captain Hook`, type=1 webhook) → **same channel, same guild (`1309551158196572280`)**, test message deliver hua ✅
 - Dono **channel-only** hain, DM nahi kar sakte — ye Discord ka limit hai, bot hi DM kar sakta hai
 
+## Level-up announcement channel
+
+Run `/levelchannel` and choose a channel from Discord's channel picker. That destination receives **only XP/level-up announcements**; other bot messages keep their normal destinations. Leave the channel blank to check the current destination. Use `/levelchannel mode:Off` to return notices to the channel where XP was earned.
+
+Only admins/mods can change this setting. It is saved per server in the ignored runtime file `bot/level_channels.json`; if the configured channel is unavailable, the bot falls back to the message channel.
+
 ## Files
 - `bot.py` — pura bot + HTTP server
 - `requirements.txt` — `discord.py` + `aiohttp`

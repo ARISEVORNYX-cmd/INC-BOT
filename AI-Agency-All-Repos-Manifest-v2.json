@@ -1,0 +1,458 @@
+{
+  "generated_by": "INC-BOT / Arena agent",
+  "generated_at_utc": "2026-11-15T18:05:37Z",
+  "bundle": "AI-Agency-Connector-v2.zip",
+  "bundle_version": 2,
+  "purpose": "Portable companion source and integration instructions for the repos listed below; not an in-place Drive ZIP edit or live repository connection.",
+  "repo_count": 47,
+  "parent_folder_count": 6,
+  "parent_folders": [
+    "0AFWQkaQQDzeEUk9PVA",
+    "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+    "1L6mfFAbHPF2cuFVzH6Q1HLf5F_WoTFz7",
+    "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+    "1uLuSoCEQmMnFbihWq3Hv7gN94FBOHK9A",
+    "1ujk8w-dDitnZS9KVjTRBHUtFpk-LAhia"
+  ],
+  "drive_status": {
+    "original_repo_zip_files_modified": 0,
+    "comments_added": 0,
+    "live_repository_integrations_established": 0,
+    "note": "The connector bundle is a separate companion package. Each repository must be downloaded, extracted, reviewed, and integrated separately."
+  },
+  "sales_agency": {
+    "role_profiles": 56,
+    "departments": {
+      "lead_generation": 16,
+      "outreach": 16,
+      "sales_calling": 12,
+      "crm_operations": 12
+    },
+    "mode": "local consent-first drafts only; no sending, calls, scraping, enrichment, or CRM writes"
+  },
+  "repos": [
+    {
+      "drive_file_id": "14xwiRNWw1t14R3VgOXtSidpuByZ1_zhU",
+      "name": "agent-browser-v0.41.2.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1IifkGGQUhzwvlyQ50vy1yseUX-bNRGdq",
+      "name": "agent-memory__tigerless-labs.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1ighTY-V782cGiBGUa6gBz5AZyqC2_lbP",
+      "name": "Agent-Reach-fatihdmrcgl-source.zip",
+      "parent_folder": "0AFWQkaQQDzeEUk9PVA",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Dg-_ePm32gRreopY3pYsk0piDBUsHsNC",
+      "name": "Agent-Reach-v1.6.1-source.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1_Oa50WTWR4TgZ0Y7tz-yQvI5oXoREc_2",
+      "name": "Agent-Reach__Panniantong.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1J6cz61tWKzpSe51j88e_dU3bG9Px2vkp",
+      "name": "AgentTeams.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1KL13M9a29a7GzKoxxk-5aqOdDEwAT8Pm",
+      "name": "AI-Agency-Website-v1.1.zip",
+      "parent_folder": "1ujk8w-dDitnZS9KVjTRBHUtFpk-LAhia",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1BqDPtbbKCtJBY-tCmcyWfkChB1zzRUxi",
+      "name": "AI-Agency-Website-v1.zip",
+      "parent_folder": "1ujk8w-dDitnZS9KVjTRBHUtFpk-LAhia",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1ZNgzoW4bRVhtMRrP2cJ1S9bX8EuF4BEJ",
+      "name": "AIEngineeringFromScratch.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1f60Hu6D5saEkuMfgx7WmzigcdAn3NdoC",
+      "name": "AirLLM.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1SHOI5OL2VbfX8Xj4ot2uj-Bc3t9dkr3W",
+      "name": "Anthropic-Cybersecurity-Skills__mukul975.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1qSlkca5nb69mmcvm_LLFu4vmWilnVICo",
+      "name": "AppFlowy__AppFlowy-IO.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "16JLtGJ_FTjCdrUWhsYI16Rik8oTccIM3",
+      "name": "awesome-gamedev-agent-skills__gamedev-skills.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1NbVLS_6xMxYYjI-e8cwP17TX9M6gCzW-",
+      "name": "awesome-harness-engineering__ai-boost.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1eses_kMz4v_x2d7Z-07r45idC4J8Pwlc",
+      "name": "browser-use__browser-use.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1e9iMstmaDMK9Go3z924qmeho6kVNtr4a",
+      "name": "build-your-own-x__codecrafters-io.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1SpuVzdhuplfPQUgSoE4YdRQnaMaythPJ",
+      "name": "coop-anything__cranebeaker.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Alh2xBiabqYjeLWe-kZONHxF-43PvzEg",
+      "name": "Court-Skill.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1B-TRv0hBm5x-zer2-vZ8FnZAAlIhqjqw",
+      "name": "demo.studio__faintstack.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1DUKZTWs3CHl23YwbfkjuctKlysoDyNwc",
+      "name": "FreeLLMAPI-v0.16.20-source.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "12zTE8a2xK90Tdb6UCCRmWJWgb5v1iCGk",
+      "name": "GLM-5.2_code.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1bILC3dZ1NTHW7cw1lGp-S7bpUjD8K3x_",
+      "name": "hexstrike-ai__0x4m4.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1o5DLaIl2b9Q-awApHJ-UO62XwpJEMC0_",
+      "name": "LUTs_similar.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1cJo1Shtj2a9d1iyuXNiRTjuTx3P9gDXP",
+      "name": "Meta-Facebook-Python-Business-SDK-26.0.4-source.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1dX0fq1waTfMFOcOZIBDcKIDNUxzyEws_",
+      "name": "MetaGPT.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Br99MukPnjd2zvxUkaU8tmaOnpFENIqg",
+      "name": "Mika__wangzan101.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Vyo_o05YT-OIe3qvFCHDgEm4buXbeXAy",
+      "name": "montage-ai-source-noncommercial.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Sc6OuCd_OrZ-U3SRaWj8ICArGXmdnuvP",
+      "name": "nanobot__HKUDS.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1hIiQE85KxbYaJpEmrsek6WtyFk8HHcp9",
+      "name": "nanoMuse__nano-muse.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1HDqQxyXdM-gIDfieethiyZGNf1tvSbuF",
+      "name": "nezu-bot-github-pages.zip",
+      "parent_folder": "1L6mfFAbHPF2cuFVzH6Q1HLf5F_WoTFz7",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1YdR3qRMd069XYZFhEDhxRsmSopmCi6p9",
+      "name": "open-seo__every-app.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Wk8_hre8uHfRFHkpA1Ee767yCM9F_23Z",
+      "name": "OpenChatCut__0xsline.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1v4aHX4amYHnzVHKBy9JB5_7ESdDqRpuE",
+      "name": "OpenViking.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "13z-xvEgPpPxOzvit6GL56GSnGaRJvMZR",
+      "name": "OpenWhispr__openwhispr.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1gBN29HXbt3XOABKhK2GQ5Ka-MnVn2bL9",
+      "name": "PaperKnife__potatameister.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "199S0dUK4e4cYZXFOjec4KJY7zP6h74TY",
+      "name": "Ponytail-MIT-source.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "16IU8W89McvAnxMwN_-hSsqQOKlAzhgG-",
+      "name": "public-apis_repo_asof_2026-11-06.zip",
+      "parent_folder": "1uLuSoCEQmMnFbihWq3Hv7gN94FBOHK9A",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1MAK2wnQW6mf-eGjXTgUwlba6FOhCaJkZ",
+      "name": "Qwen2.5-Omni-source-d8a31ca.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1xrXARrNVXcGk04kybXT59se14eL3Es33",
+      "name": "RuView__ruvnet.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1MjQVifsIt2cuXoGHWHVHaP8IwzGfrOQb",
+      "name": "Scentory_Cloudflare_Backend_Starter.zip",
+      "parent_folder": "1uLuSoCEQmMnFbihWq3Hv7gN94FBOHK9A",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1PzfvWT_9qgwTXBogCZSTfa6rheJesSqy",
+      "name": "SkillSpector-v2.13.4-source.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1QmwlHbgtgotW0R9soVKNlFRMFwE0IVqA",
+      "name": "SmartIsland__agupta07505.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1za837M2f4pKoH3V0rquP2UHx24os9NYA",
+      "name": "ThinkRail.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1yIw39PDOhEjsLw6oqcj7EEJsA8Od6WrT",
+      "name": "TwinDesk__InukaAsith.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Y4_CDPpSaZSluiPfEU5jPESOuoPVZ9r9",
+      "name": "vercel-skills-v1.7.6.zip",
+      "parent_folder": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1tQgAZlLzfMPMLa909Z6XsG9jY3hlNFgh",
+      "name": "VoiceStudio__debpalash.zip",
+      "parent_folder": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    },
+    {
+      "drive_file_id": "1Fkkw4ZIrhrQAZYbBimj970B8yzJwSbuD",
+      "name": "Workspace-duplicate-backup-redacted.zip",
+      "parent_folder": "0AFWQkaQQDzeEUk9PVA",
+      "ai_status": "companion_bundle_only",
+      "original_drive_zip_modified": false,
+      "drive_comment_added": false,
+      "live_repo_integration": false
+    }
+  ]
+}

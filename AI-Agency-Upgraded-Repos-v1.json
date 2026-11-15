@@ -1,0 +1,1370 @@
+{
+  "generated_by": "INC-BOT / Arena agent",
+  "generated_at_utc": "2026-11-15T18:33:25Z",
+  "version": 1,
+  "purpose": "47 separate repository archive copies with an isolated INC-BOT Ari + Level-3 + sales/PWA sidecar. Original source ZIPs remain unchanged.",
+  "source_manifest": "AI-Agency-All-Repos-Manifest-v2.json",
+  "source_repo_count": 47,
+  "upgraded_copy_count": 47,
+  "missing_source_count": 0,
+  "failed_count": 0,
+  "originals_modified": 0,
+  "upstream_code_customized": 0,
+  "note": "The full shared AI kit is added to a copy without overwriting the upstream app. Appending entries updates each output ZIP's central directory; the staged source ZIP remains byte-for-byte untouched and is identified by its SHA-256. Per-repo profiles are filename-based; no upstream build/tests were run. For app-specific code rewrites, each project needs a separate code review and feature plan.",
+  "outputs": [
+    {
+      "source_name": "agent-browser-v0.41.2.zip",
+      "source_drive_file_id": "14xwiRNWw1t14R3VgOXtSidpuByZ1_zhU",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "agent-browser-v0.41.2--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/agent-browser-v0.41.2--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2871465,
+      "source_archive_sha256": "ab34d3742ce8eb473380e6641402c3f25550b69dc29e50608d881754da53cafb",
+      "upgraded_bytes": 2988773,
+      "profile": {
+        "source_archive": "agent-browser-v0.41.2.zip",
+        "source_drive_file_id": "14xwiRNWw1t14R3VgOXtSidpuByZ1_zhU",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 535,
+        "top_level_directories_sample": [
+          "agent-browser-0.41.2"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript",
+          "rust"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "agent-memory__tigerless-labs.zip",
+      "source_drive_file_id": "1IifkGGQUhzwvlyQ50vy1yseUX-bNRGdq",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "agent-memory__tigerless-labs--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/agent-memory__tigerless-labs--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 642220,
+      "source_archive_sha256": "63181aa5789e96ba3c647573565c66ad31d94e46936f9a5d8d978c4f4af69330",
+      "upgraded_bytes": 759517,
+      "profile": {
+        "source_archive": "agent-memory__tigerless-labs.zip",
+        "source_drive_file_id": "1IifkGGQUhzwvlyQ50vy1yseUX-bNRGdq",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 268,
+        "top_level_directories_sample": [
+          "agent-memory-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Agent-Reach-fatihdmrcgl-source.zip",
+      "source_drive_file_id": "1ighTY-V782cGiBGUa6gBz5AZyqC2_lbP",
+      "source_parent_folder_id": "0AFWQkaQQDzeEUk9PVA",
+      "upgraded_name": "Agent-Reach-fatihdmrcgl-source--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Agent-Reach-fatihdmrcgl-source--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 17770,
+      "source_archive_sha256": "a663b0fd808e3e205a9a20c922723e27235f90063860ee1db4b62d73da881df3",
+      "upgraded_bytes": 135085,
+      "profile": {
+        "source_archive": "Agent-Reach-fatihdmrcgl-source.zip",
+        "source_drive_file_id": "1ighTY-V782cGiBGUa6gBz5AZyqC2_lbP",
+        "source_parent_folder_id": "0AFWQkaQQDzeEUk9PVA",
+        "source_file_count": 22,
+        "top_level_directories_sample": [
+          ".github",
+          "docs",
+          "examples",
+          "scripts",
+          "src",
+          "test"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Agent-Reach-v1.6.1-source.zip",
+      "source_drive_file_id": "1Dg-_ePm32gRreopY3pYsk0piDBUsHsNC",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "Agent-Reach-v1.6.1-source--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Agent-Reach-v1.6.1-source--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 689158,
+      "source_archive_sha256": "9b1421fe5c9b0ecfcf707c1e5c32787d8438be20f4c970ddf563e9ba60131821",
+      "upgraded_bytes": 806451,
+      "profile": {
+        "source_archive": "Agent-Reach-v1.6.1-source.zip",
+        "source_drive_file_id": "1Dg-_ePm32gRreopY3pYsk0piDBUsHsNC",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 122,
+        "top_level_directories_sample": [
+          "Agent-Reach-1.6.1"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Agent-Reach__Panniantong.zip",
+      "source_drive_file_id": "1_Oa50WTWR4TgZ0Y7tz-yQvI5oXoREc_2",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "Agent-Reach__Panniantong--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Agent-Reach__Panniantong--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 637587,
+      "source_archive_sha256": "d64bbd5d81d2f49f2b792e862a7e5fcfceba8c14569538d1c07dd623df15005f",
+      "upgraded_bytes": 754882,
+      "profile": {
+        "source_archive": "Agent-Reach__Panniantong.zip",
+        "source_drive_file_id": "1_Oa50WTWR4TgZ0Y7tz-yQvI5oXoREc_2",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 124,
+        "top_level_directories_sample": [
+          "Agent-Reach-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "AgentTeams.zip",
+      "source_drive_file_id": "1J6cz61tWKzpSe51j88e_dU3bG9Px2vkp",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "AgentTeams--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/AgentTeams--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 10581698,
+      "source_archive_sha256": "9286bb4c1f32429e31d3e7125a077ddd112e2cf2587e2b70e77db0952bc40fc4",
+      "upgraded_bytes": 10698995,
+      "profile": {
+        "source_archive": "AgentTeams.zip",
+        "source_drive_file_id": "1J6cz61tWKzpSe51j88e_dU3bG9Px2vkp",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 1519,
+        "top_level_directories_sample": [
+          "AgentTeams-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript",
+          "go",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "AI-Agency-Website-v1.1.zip",
+      "source_drive_file_id": "1KL13M9a29a7GzKoxxk-5aqOdDEwAT8Pm",
+      "source_parent_folder_id": "1ujk8w-dDitnZS9KVjTRBHUtFpk-LAhia",
+      "upgraded_name": "AI-Agency-Website-v1.1--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/AI-Agency-Website-v1.1--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2356031,
+      "source_archive_sha256": "518a57c5c141a1ce55f6252f721e22ed4b6d9daf69a333d0f2dabb906184dd5c",
+      "upgraded_bytes": 2473328,
+      "profile": {
+        "source_archive": "AI-Agency-Website-v1.1.zip",
+        "source_drive_file_id": "1KL13M9a29a7GzKoxxk-5aqOdDEwAT8Pm",
+        "source_parent_folder_id": "1ujk8w-dDitnZS9KVjTRBHUtFpk-LAhia",
+        "source_file_count": 3,
+        "top_level_directories_sample": [
+          "ai-agency-site"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "AI-Agency-Website-v1.zip",
+      "source_drive_file_id": "1BqDPtbbKCtJBY-tCmcyWfkChB1zzRUxi",
+      "source_parent_folder_id": "1ujk8w-dDitnZS9KVjTRBHUtFpk-LAhia",
+      "upgraded_name": "AI-Agency-Website-v1--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/AI-Agency-Website-v1--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2356036,
+      "source_archive_sha256": "08a56fe0a172bb6925ca9608e2b5b08100150c3cd76232253db5bdfd8d3e17e8",
+      "upgraded_bytes": 2473325,
+      "profile": {
+        "source_archive": "AI-Agency-Website-v1.zip",
+        "source_drive_file_id": "1BqDPtbbKCtJBY-tCmcyWfkChB1zzRUxi",
+        "source_parent_folder_id": "1ujk8w-dDitnZS9KVjTRBHUtFpk-LAhia",
+        "source_file_count": 3,
+        "top_level_directories_sample": [
+          "ai-agency-site"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "AIEngineeringFromScratch.zip",
+      "source_drive_file_id": "1ZNgzoW4bRVhtMRrP2cJ1S9bX8EuF4BEJ",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "AIEngineeringFromScratch--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/AIEngineeringFromScratch--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 81169476,
+      "source_archive_sha256": "1355348137c659e1c4d7cd59ed9ea9a81950c8366e692c79ee1c2a87ada8cde5",
+      "upgraded_bytes": 81286813,
+      "profile": {
+        "source_archive": "AIEngineeringFromScratch.zip",
+        "source_drive_file_id": "1ZNgzoW4bRVhtMRrP2cJ1S9bX8EuF4BEJ",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 11293,
+        "top_level_directories_sample": [
+          "ai-engineering-from-scratch-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript",
+          "go",
+          "dotnet"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "AirLLM.zip",
+      "source_drive_file_id": "1f60Hu6D5saEkuMfgx7WmzigcdAn3NdoC",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "AirLLM--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/AirLLM--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2520998,
+      "source_archive_sha256": "490dcd138a1e3a230df3700354908daa42a505f2c80c11fb202ac78387f7ee26",
+      "upgraded_bytes": 2638271,
+      "profile": {
+        "source_archive": "AirLLM.zip",
+        "source_drive_file_id": "1f60Hu6D5saEkuMfgx7WmzigcdAn3NdoC",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 107,
+        "top_level_directories_sample": [
+          "airllm-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Anthropic-Cybersecurity-Skills__mukul975.zip",
+      "source_drive_file_id": "1SHOI5OL2VbfX8Xj4ot2uj-Bc3t9dkr3W",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "Anthropic-Cybersecurity-Skills__mukul975--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Anthropic-Cybersecurity-Skills__mukul975--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 13854861,
+      "source_archive_sha256": "bfc6963f68d68968655c5276026dbe75f4d1354795679b2b00344852201a27e3",
+      "upgraded_bytes": 13972180,
+      "profile": {
+        "source_archive": "Anthropic-Cybersecurity-Skills__mukul975.zip",
+        "source_drive_file_id": "1SHOI5OL2VbfX8Xj4ot2uj-Bc3t9dkr3W",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 4532,
+        "top_level_directories_sample": [
+          "Anthropic-Cybersecurity-Skills-main"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "AppFlowy__AppFlowy-IO.zip",
+      "source_drive_file_id": "1qSlkca5nb69mmcvm_LLFu4vmWilnVICo",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "AppFlowy__AppFlowy-IO--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/AppFlowy__AppFlowy-IO--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 22805058,
+      "source_archive_sha256": "b9dcd4d0b5234148231a91c7073911f706c511b2fc0d995042234b88246e8a0e",
+      "upgraded_bytes": 22922369,
+      "profile": {
+        "source_archive": "AppFlowy__AppFlowy-IO.zip",
+        "source_drive_file_id": "1qSlkca5nb69mmcvm_LLFu4vmWilnVICo",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 4597,
+        "top_level_directories_sample": [
+          "AppFlowy-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "rust",
+          "java_kotlin",
+          "flutter_dart",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "awesome-gamedev-agent-skills__gamedev-skills.zip",
+      "source_drive_file_id": "16JLtGJ_FTjCdrUWhsYI16Rik8oTccIM3",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "awesome-gamedev-agent-skills__gamedev-skills--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/awesome-gamedev-agent-skills__gamedev-skills--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2775281,
+      "source_archive_sha256": "87201316f6b9f26313ba8a65e37d5c2ba1194d7357d166e25caf03426fb370ed",
+      "upgraded_bytes": 2892595,
+      "profile": {
+        "source_archive": "awesome-gamedev-agent-skills__gamedev-skills.zip",
+        "source_drive_file_id": "16JLtGJ_FTjCdrUWhsYI16Rik8oTccIM3",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 256,
+        "top_level_directories_sample": [
+          "awesome-gamedev-agent-skills-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "awesome-harness-engineering__ai-boost.zip",
+      "source_drive_file_id": "1NbVLS_6xMxYYjI-e8cwP17TX9M6gCzW-",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "awesome-harness-engineering__ai-boost--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/awesome-harness-engineering__ai-boost--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 278402,
+      "source_archive_sha256": "f5ac60a9efaccf46f6599bd0c1747faf936223525054ba9e744e9377ea2c01e0",
+      "upgraded_bytes": 395711,
+      "profile": {
+        "source_archive": "awesome-harness-engineering__ai-boost.zip",
+        "source_drive_file_id": "1NbVLS_6xMxYYjI-e8cwP17TX9M6gCzW-",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 12,
+        "top_level_directories_sample": [
+          "awesome-harness-engineering-main"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "browser-use__browser-use.zip",
+      "source_drive_file_id": "1eses_kMz4v_x2d7Z-07r45idC4J8Pwlc",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "browser-use__browser-use--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/browser-use__browser-use--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 1306834,
+      "source_archive_sha256": "05d25588b9a60c429bcfc4c453369dcec3a9423e4df5eb62715ee9ddae749f8e",
+      "upgraded_bytes": 1424110,
+      "profile": {
+        "source_archive": "browser-use__browser-use.zip",
+        "source_drive_file_id": "1eses_kMz4v_x2d7Z-07r45idC4J8Pwlc",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 141,
+        "top_level_directories_sample": [
+          "browser-use-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "build-your-own-x__codecrafters-io.zip",
+      "source_drive_file_id": "1e9iMstmaDMK9Go3z924qmeho6kVNtr4a",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "build-your-own-x__codecrafters-io--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/build-your-own-x__codecrafters-io--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 41884,
+      "source_archive_sha256": "afc2e4e52e904b194a94f6e894f9b295b8a2c78abbaef668f4ae11210ced8ca2",
+      "upgraded_bytes": 159178,
+      "profile": {
+        "source_archive": "build-your-own-x__codecrafters-io.zip",
+        "source_drive_file_id": "1e9iMstmaDMK9Go3z924qmeho6kVNtr4a",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 4,
+        "top_level_directories_sample": [
+          "build-your-own-x-master"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "coop-anything__cranebeaker.zip",
+      "source_drive_file_id": "1SpuVzdhuplfPQUgSoE4YdRQnaMaythPJ",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "coop-anything__cranebeaker--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/coop-anything__cranebeaker--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 3266467,
+      "source_archive_sha256": "5f7111f4f46ffe902a41cbcf6995304737b1ce507791751e17ac5aeef9da4d1d",
+      "upgraded_bytes": 3383772,
+      "profile": {
+        "source_archive": "coop-anything__cranebeaker.zip",
+        "source_drive_file_id": "1SpuVzdhuplfPQUgSoE4YdRQnaMaythPJ",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 597,
+        "top_level_directories_sample": [
+          "coop-anything-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "dotnet",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Court-Skill.zip",
+      "source_drive_file_id": "1Alh2xBiabqYjeLWe-kZONHxF-43PvzEg",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "Court-Skill--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Court-Skill--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 28642,
+      "source_archive_sha256": "b95a8ea61438b5f7139f98c47ae2ee029f30027095a36b8ddc6bc936841d805d",
+      "upgraded_bytes": 145924,
+      "profile": {
+        "source_archive": "Court-Skill.zip",
+        "source_drive_file_id": "1Alh2xBiabqYjeLWe-kZONHxF-43PvzEg",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 24,
+        "top_level_directories_sample": [
+          "court-skill-main"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "demo.studio__faintstack.zip",
+      "source_drive_file_id": "1B-TRv0hBm5x-zer2-vZ8FnZAAlIhqjqw",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "demo.studio__faintstack--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/demo.studio__faintstack--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 11040282,
+      "source_archive_sha256": "1884b61f7f6f540c16fad93259d25be098b08e7990881d4615a1b28bf354e2b2",
+      "upgraded_bytes": 11157580,
+      "profile": {
+        "source_archive": "demo.studio__faintstack.zip",
+        "source_drive_file_id": "1B-TRv0hBm5x-zer2-vZ8FnZAAlIhqjqw",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 44,
+        "top_level_directories_sample": [
+          "demo.studio-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "FreeLLMAPI-v0.16.20-source.zip",
+      "source_drive_file_id": "1DUKZTWs3CHl23YwbfkjuctKlysoDyNwc",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "FreeLLMAPI-v0.16.20-source--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/FreeLLMAPI-v0.16.20-source--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 8972679,
+      "source_archive_sha256": "7503ec89e378662c842964592c01486f0febc99743bf0ea13399f4014069d4f2",
+      "upgraded_bytes": 9089999,
+      "profile": {
+        "source_archive": "FreeLLMAPI-v0.16.20-source.zip",
+        "source_drive_file_id": "1DUKZTWs3CHl23YwbfkjuctKlysoDyNwc",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 1312,
+        "top_level_directories_sample": [
+          "freellmapi-0.16.20"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "GLM-5.2_code.zip",
+      "source_drive_file_id": "12zTE8a2xK90Tdb6UCCRmWJWgb5v1iCGk",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "GLM-5.2_code--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/GLM-5.2_code--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 10351495,
+      "source_archive_sha256": "89bdae490366c19ce0b1be4f38fd5e5183d3259e0f04bd6014b4cf6d089c70ab",
+      "upgraded_bytes": 10468779,
+      "profile": {
+        "source_archive": "GLM-5.2_code.zip",
+        "source_drive_file_id": "12zTE8a2xK90Tdb6UCCRmWJWgb5v1iCGk",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 22,
+        "top_level_directories_sample": [
+          "GLM-5-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "hexstrike-ai__0x4m4.zip",
+      "source_drive_file_id": "1bILC3dZ1NTHW7cw1lGp-S7bpUjD8K3x_",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "hexstrike-ai__0x4m4--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/hexstrike-ai__0x4m4--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2083794,
+      "source_archive_sha256": "f3bca6d675e6cc60bda7f422aa4c6d6297240bbca8f63c2cab0c895e3d036792",
+      "upgraded_bytes": 2201088,
+      "profile": {
+        "source_archive": "hexstrike-ai__0x4m4.zip",
+        "source_drive_file_id": "1bILC3dZ1NTHW7cw1lGp-S7bpUjD8K3x_",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 14,
+        "top_level_directories_sample": [
+          "hexstrike-ai-master"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "LUTs_similar.zip",
+      "source_drive_file_id": "1o5DLaIl2b9Q-awApHJ-UO62XwpJEMC0_",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "LUTs_similar--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/LUTs_similar--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 3533667,
+      "source_archive_sha256": "c795c66c6d80bc193c8ab062335787f323084580de9a25cec1db907a81ea696b",
+      "upgraded_bytes": 3650945,
+      "profile": {
+        "source_archive": "LUTs_similar.zip",
+        "source_drive_file_id": "1o5DLaIl2b9Q-awApHJ-UO62XwpJEMC0_",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 17,
+        "top_level_directories_sample": [
+          "luts-main"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Meta-Facebook-Python-Business-SDK-26.0.4-source.zip",
+      "source_drive_file_id": "1cJo1Shtj2a9d1iyuXNiRTjuTx3P9gDXP",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "Meta-Facebook-Python-Business-SDK-26.0.4-source--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Meta-Facebook-Python-Business-SDK-26.0.4-source--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2100755,
+      "source_archive_sha256": "25581a10d9424accff37285ade9f1671178a7110025f50a19e563413b03ab7e3",
+      "upgraded_bytes": 2218092,
+      "profile": {
+        "source_archive": "Meta-Facebook-Python-Business-SDK-26.0.4-source.zip",
+        "source_drive_file_id": "1cJo1Shtj2a9d1iyuXNiRTjuTx3P9gDXP",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 1444,
+        "top_level_directories_sample": [
+          "facebook-python-business-sdk-26.0.4"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "MetaGPT.zip",
+      "source_drive_file_id": "1dX0fq1waTfMFOcOZIBDcKIDNUxzyEws_",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "MetaGPT--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/MetaGPT--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 20107289,
+      "source_archive_sha256": "b9137d7e0073fffa0d1acb1eb9dff1072b77eb715fa540f4529ce2be4c967dd9",
+      "upgraded_bytes": 20224580,
+      "profile": {
+        "source_archive": "MetaGPT.zip",
+        "source_drive_file_id": "1dX0fq1waTfMFOcOZIBDcKIDNUxzyEws_",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 1255,
+        "top_level_directories_sample": [
+          "MetaGPT-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Mika__wangzan101.zip",
+      "source_drive_file_id": "1Br99MukPnjd2zvxUkaU8tmaOnpFENIqg",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "Mika__wangzan101--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Mika__wangzan101--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 72892653,
+      "source_archive_sha256": "0c6fac6e5bb3ee438c9447755d5d9188b943294f859a13e774770d968fbf64f8",
+      "upgraded_bytes": 73009953,
+      "profile": {
+        "source_archive": "Mika__wangzan101.zip",
+        "source_drive_file_id": "1Br99MukPnjd2zvxUkaU8tmaOnpFENIqg",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 2672,
+        "top_level_directories_sample": [
+          "Mika-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "go",
+          "java_kotlin"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "montage-ai-source-noncommercial.zip",
+      "source_drive_file_id": "1Vyo_o05YT-OIe3qvFCHDgEm4buXbeXAy",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "montage-ai-source-noncommercial--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/montage-ai-source-noncommercial--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 13693074,
+      "source_archive_sha256": "5c3388e308a8bb21952387a053df3c0248c5627f5e1ddcbe60f32f6a0e555250",
+      "upgraded_bytes": 13810385,
+      "profile": {
+        "source_archive": "montage-ai-source-noncommercial.zip",
+        "source_drive_file_id": "1Vyo_o05YT-OIe3qvFCHDgEm4buXbeXAy",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 706,
+        "top_level_directories_sample": [
+          "ai-repos"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "go",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "nanobot__HKUDS.zip",
+      "source_drive_file_id": "1Sc6OuCd_OrZ-U3SRaWj8ICArGXmdnuvP",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "nanobot__HKUDS--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/nanobot__HKUDS--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 9589728,
+      "source_archive_sha256": "b9e00415d442c2ec4cc4835e43260b3a455761ce2f0a343ab2bdc1181788c01f",
+      "upgraded_bytes": 9707032,
+      "profile": {
+        "source_archive": "nanobot__HKUDS.zip",
+        "source_drive_file_id": "1Sc6OuCd_OrZ-U3SRaWj8ICArGXmdnuvP",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 2348,
+        "top_level_directories_sample": [
+          "nanobot-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "nanoMuse__nano-muse.zip",
+      "source_drive_file_id": "1hIiQE85KxbYaJpEmrsek6WtyFk8HHcp9",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "nanoMuse__nano-muse--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/nanoMuse__nano-muse--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 57186006,
+      "source_archive_sha256": "3730b5593bd5eb3f9f9871d64cdd4a45ed48cb731aa724aa98e1cc7e9fab1ad2",
+      "upgraded_bytes": 57303333,
+      "profile": {
+        "source_archive": "nanoMuse__nano-muse.zip",
+        "source_drive_file_id": "1hIiQE85KxbYaJpEmrsek6WtyFk8HHcp9",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 3726,
+        "top_level_directories_sample": [
+          "nanoMuse-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript",
+          "go",
+          "java_kotlin",
+          "dotnet",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "nezu-bot-github-pages.zip",
+      "source_drive_file_id": "1HDqQxyXdM-gIDfieethiyZGNf1tvSbuF",
+      "source_parent_folder_id": "1L6mfFAbHPF2cuFVzH6Q1HLf5F_WoTFz7",
+      "upgraded_name": "nezu-bot-github-pages--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/nezu-bot-github-pages--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 7976,
+      "source_archive_sha256": "865edc7b5bc7623fc7645a3b2be585335239a43330a505e9238898e8233f640e",
+      "upgraded_bytes": 125250,
+      "profile": {
+        "source_archive": "nezu-bot-github-pages.zip",
+        "source_drive_file_id": "1HDqQxyXdM-gIDfieethiyZGNf1tvSbuF",
+        "source_parent_folder_id": "1L6mfFAbHPF2cuFVzH6Q1HLf5F_WoTFz7",
+        "source_file_count": 2,
+        "top_level_directories_sample": [],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "open-seo__every-app.zip",
+      "source_drive_file_id": "1YdR3qRMd069XYZFhEDhxRsmSopmCi6p9",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "open-seo__every-app--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/open-seo__every-app--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 19674091,
+      "source_archive_sha256": "ae170f2ce6b58bbcb6b641b4468a5c57dbb7f85e862482a5517eb5afafcac18a",
+      "upgraded_bytes": 19791388,
+      "profile": {
+        "source_archive": "open-seo__every-app.zip",
+        "source_drive_file_id": "1YdR3qRMd069XYZFhEDhxRsmSopmCi6p9",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 2302,
+        "top_level_directories_sample": [
+          "open-seo-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "OpenChatCut__0xsline.zip",
+      "source_drive_file_id": "1Wk8_hre8uHfRFHkpA1Ee767yCM9F_23Z",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "OpenChatCut__0xsline--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/OpenChatCut__0xsline--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 65366524,
+      "source_archive_sha256": "bfa5406fcac010471cfb898ff17b1a4e2493772f8d95ab92d77f49a1b2e75b7b",
+      "upgraded_bytes": 65483828,
+      "profile": {
+        "source_archive": "OpenChatCut__0xsline.zip",
+        "source_drive_file_id": "1Wk8_hre8uHfRFHkpA1Ee767yCM9F_23Z",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 2858,
+        "top_level_directories_sample": [
+          "OpenChatCut-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "OpenViking.zip",
+      "source_drive_file_id": "1v4aHX4amYHnzVHKBy9JB5_7ESdDqRpuE",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "OpenViking--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/OpenViking--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 79689313,
+      "source_archive_sha256": "4c6490786ca0c23b83a4b5229ab65ac99c1fa02e4242439c33ab8b9e3d0bc6f1",
+      "upgraded_bytes": 79806626,
+      "profile": {
+        "source_archive": "OpenViking.zip",
+        "source_drive_file_id": "1v4aHX4amYHnzVHKBy9JB5_7ESdDqRpuE",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 6669,
+        "top_level_directories_sample": [
+          "OpenViking-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript",
+          "rust",
+          "go",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "OpenWhispr__openwhispr.zip",
+      "source_drive_file_id": "13z-xvEgPpPxOzvit6GL56GSnGaRJvMZR",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "OpenWhispr__openwhispr--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/OpenWhispr__openwhispr--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 17021083,
+      "source_archive_sha256": "e75f2de7f45c0c5ba1bd5b48e93792024bf39c14bfe36253dce2f70019635562",
+      "upgraded_bytes": 17138398,
+      "profile": {
+        "source_archive": "OpenWhispr__openwhispr.zip",
+        "source_drive_file_id": "13z-xvEgPpPxOzvit6GL56GSnGaRJvMZR",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 3848,
+        "top_level_directories_sample": [
+          "openwhispr-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript",
+          "ruby",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "PaperKnife__potatameister.zip",
+      "source_drive_file_id": "1gBN29HXbt3XOABKhK2GQ5Ka-MnVn2bL9",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "PaperKnife__potatameister--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/PaperKnife__potatameister--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2802713,
+      "source_archive_sha256": "eb0311ba5220f49355c151da965a169badfdb2e7590482be69875abb04168c84",
+      "upgraded_bytes": 2920027,
+      "profile": {
+        "source_archive": "PaperKnife__potatameister.zip",
+        "source_drive_file_id": "1gBN29HXbt3XOABKhK2GQ5Ka-MnVn2bL9",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 332,
+        "top_level_directories_sample": [
+          "PaperKnife-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript",
+          "java_kotlin"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Ponytail-MIT-source.zip",
+      "source_drive_file_id": "199S0dUK4e4cYZXFOjec4KJY7zP6h74TY",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "Ponytail-MIT-source--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Ponytail-MIT-source--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 11013542,
+      "source_archive_sha256": "3f2cc7cf2861ac66339b360c7a27f10e9c395bc796b71ce97c1fea0bab49ffbc",
+      "upgraded_bytes": 11130841,
+      "profile": {
+        "source_archive": "Ponytail-MIT-source.zip",
+        "source_drive_file_id": "199S0dUK4e4cYZXFOjec4KJY7zP6h74TY",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 216,
+        "top_level_directories_sample": [
+          "ai-repos"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "public-apis_repo_asof_2026-11-06.zip",
+      "source_drive_file_id": "16IU8W89McvAnxMwN_-hSsqQOKlAzhgG-",
+      "source_parent_folder_id": "1uLuSoCEQmMnFbihWq3Hv7gN94FBOHK9A",
+      "upgraded_name": "public-apis_repo_asof_2026-11-06--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/public-apis_repo_asof_2026-11-06--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 126233,
+      "source_archive_sha256": "f2d99f11d675ca3657d3b7a68d0a6c6bbf968344ab89763662299bf258a9f920",
+      "upgraded_bytes": 243539,
+      "profile": {
+        "source_archive": "public-apis_repo_asof_2026-11-06.zip",
+        "source_drive_file_id": "16IU8W89McvAnxMwN_-hSsqQOKlAzhgG-",
+        "source_parent_folder_id": "1uLuSoCEQmMnFbihWq3Hv7gN94FBOHK9A",
+        "source_file_count": 14,
+        "top_level_directories_sample": [
+          "public-apis_asof_2026-11-06"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Qwen2.5-Omni-source-d8a31ca.zip",
+      "source_drive_file_id": "1MAK2wnQW6mf-eGjXTgUwlba6FOhCaJkZ",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "Qwen2.5-Omni-source-d8a31ca--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Qwen2.5-Omni-source-d8a31ca--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 14124290,
+      "source_archive_sha256": "62ff320d5edd5005bef7fc78d8e8605a5b8056fc52cdba4e0a71ec5d50994728",
+      "upgraded_bytes": 14241618,
+      "profile": {
+        "source_archive": "Qwen2.5-Omni-source-d8a31ca.zip",
+        "source_drive_file_id": "1MAK2wnQW6mf-eGjXTgUwlba6FOhCaJkZ",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 24,
+        "top_level_directories_sample": [
+          "Qwen2.5-Omni-d8a31ca56c0456b6edfcbcbf4bdbb6ae2200ef42"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "RuView__ruvnet.zip",
+      "source_drive_file_id": "1xrXARrNVXcGk04kybXT59se14eL3Es33",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "RuView__ruvnet--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/RuView__ruvnet--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 64956551,
+      "source_archive_sha256": "6b908859e9296ce69668038b3d002cf095101b08d3fe5239d2d4839f0245e21e",
+      "upgraded_bytes": 65073859,
+      "profile": {
+        "source_archive": "RuView__ruvnet.zip",
+        "source_drive_file_id": "1xrXARrNVXcGk04kybXT59se14eL3Es33",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 3987,
+        "top_level_directories_sample": [
+          "RuView-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript",
+          "rust",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Scentory_Cloudflare_Backend_Starter.zip",
+      "source_drive_file_id": "1MjQVifsIt2cuXoGHWHVHaP8IwzGfrOQb",
+      "source_parent_folder_id": "1uLuSoCEQmMnFbihWq3Hv7gN94FBOHK9A",
+      "upgraded_name": "Scentory_Cloudflare_Backend_Starter--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Scentory_Cloudflare_Backend_Starter--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 18898,
+      "source_archive_sha256": "cb97b2773688e75efb55d8a95c1155f026a1d1749dddb44139a6ee94bf30d568",
+      "upgraded_bytes": 136203,
+      "profile": {
+        "source_archive": "Scentory_Cloudflare_Backend_Starter.zip",
+        "source_drive_file_id": "1MjQVifsIt2cuXoGHWHVHaP8IwzGfrOQb",
+        "source_parent_folder_id": "1uLuSoCEQmMnFbihWq3Hv7gN94FBOHK9A",
+        "source_file_count": 8,
+        "top_level_directories_sample": [
+          "cloudflare-app"
+        ],
+        "stack_markers_detected_from_filenames": [],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "SkillSpector-v2.13.4-source.zip",
+      "source_drive_file_id": "1PzfvWT_9qgwTXBogCZSTfa6rheJesSqy",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "SkillSpector-v2.13.4-source--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/SkillSpector-v2.13.4-source--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2696037,
+      "source_archive_sha256": "df1fca88d05e77a34a27a89e213f8289bcb14355008a844d81471bcc421e25d0",
+      "upgraded_bytes": 2813353,
+      "profile": {
+        "source_archive": "SkillSpector-v2.13.4-source.zip",
+        "source_drive_file_id": "1PzfvWT_9qgwTXBogCZSTfa6rheJesSqy",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 477,
+        "top_level_directories_sample": [
+          "SkillSpector-2.13.4"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "SmartIsland__agupta07505.zip",
+      "source_drive_file_id": "1QmwlHbgtgotW0R9soVKNlFRMFwE0IVqA",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "SmartIsland__agupta07505--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/SmartIsland__agupta07505--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 2688355,
+      "source_archive_sha256": "7001fafc288bd31a8803e50993d0e15089860e7837f825f2882ddf966ac5b34a",
+      "upgraded_bytes": 2805657,
+      "profile": {
+        "source_archive": "SmartIsland__agupta07505.zip",
+        "source_drive_file_id": "1QmwlHbgtgotW0R9soVKNlFRMFwE0IVqA",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 603,
+        "top_level_directories_sample": [
+          "SmartIsland-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "java_kotlin"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "ThinkRail.zip",
+      "source_drive_file_id": "1za837M2f4pKoH3V0rquP2UHx24os9NYA",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "ThinkRail--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/ThinkRail--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 18717045,
+      "source_archive_sha256": "4206fffb01a4098a1c46c4df188e3858a882a22684f4643e891615c51e24a046",
+      "upgraded_bytes": 18834335,
+      "profile": {
+        "source_archive": "ThinkRail.zip",
+        "source_drive_file_id": "1za837M2f4pKoH3V0rquP2UHx24os9NYA",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 2527,
+        "top_level_directories_sample": [
+          "thinkrail-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "TwinDesk__InukaAsith.zip",
+      "source_drive_file_id": "1yIw39PDOhEjsLw6oqcj7EEJsA8Od6WrT",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "TwinDesk__InukaAsith--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/TwinDesk__InukaAsith--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 23312757,
+      "source_archive_sha256": "ce6533d89168dcb3fdf198216c323595b1e331e7442ae7b97a940e981c592391",
+      "upgraded_bytes": 23430074,
+      "profile": {
+        "source_archive": "TwinDesk__InukaAsith.zip",
+        "source_drive_file_id": "1yIw39PDOhEjsLw6oqcj7EEJsA8Od6WrT",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 1382,
+        "top_level_directories_sample": [
+          "TwinDesk-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript",
+          "rust",
+          "java_kotlin"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "vercel-skills-v1.7.6.zip",
+      "source_drive_file_id": "1Y4_CDPpSaZSluiPfEU5jPESOuoPVZ9r9",
+      "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+      "upgraded_name": "vercel-skills-v1.7.6--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/vercel-skills-v1.7.6--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 383049,
+      "source_archive_sha256": "d9c86246ecde2dc1f64741775d284a6ec49a8191096534340298e8539dc21506",
+      "upgraded_bytes": 500350,
+      "profile": {
+        "source_archive": "vercel-skills-v1.7.6.zip",
+        "source_drive_file_id": "1Y4_CDPpSaZSluiPfEU5jPESOuoPVZ9r9",
+        "source_parent_folder_id": "1nOO3CFmh8dupySCXeRQYKk_n4zEtTGNd",
+        "source_file_count": 160,
+        "top_level_directories_sample": [
+          "skills-1.7.6"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "javascript_typescript"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "VoiceStudio__debpalash.zip",
+      "source_drive_file_id": "1tQgAZlLzfMPMLa909Z6XsG9jY3hlNFgh",
+      "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+      "upgraded_name": "VoiceStudio__debpalash--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/VoiceStudio__debpalash--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 75249552,
+      "source_archive_sha256": "8891e1845653b116b202c8d252d2f7380c21e87acf33ba70850ce6b0c44a77a0",
+      "upgraded_bytes": 75366891,
+      "profile": {
+        "source_archive": "VoiceStudio__debpalash.zip",
+        "source_drive_file_id": "1tQgAZlLzfMPMLa909Z6XsG9jY3hlNFgh",
+        "source_parent_folder_id": "16GcW4l91pM8oDl5dAaWWwVwX8aTpTiRE",
+        "source_file_count": 4989,
+        "top_level_directories_sample": [
+          "VoiceStudio-main"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python",
+          "javascript_typescript",
+          "rust",
+          "java_kotlin",
+          "swift",
+          "c_cpp"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    },
+    {
+      "source_name": "Workspace-duplicate-backup-redacted.zip",
+      "source_drive_file_id": "1Fkkw4ZIrhrQAZYbBimj970B8yzJwSbuD",
+      "source_parent_folder_id": "0AFWQkaQQDzeEUk9PVA",
+      "upgraded_name": "Workspace-duplicate-backup-redacted--INC-BOT-AI-Upgraded-v1.zip",
+      "local_path": "google_drive/upgraded-repos/Workspace-duplicate-backup-redacted--INC-BOT-AI-Upgraded-v1.zip",
+      "sidecar_path": "inc_bot_ai",
+      "status": "upgraded_copy_created",
+      "added_overlay_entries": 47,
+      "source_bytes": 51255,
+      "source_archive_sha256": "55c52db0686f8e1a89d00138741765d1178b7f18ab06ec2115afff24913101ae",
+      "upgraded_bytes": 168573,
+      "profile": {
+        "source_archive": "Workspace-duplicate-backup-redacted.zip",
+        "source_drive_file_id": "1Fkkw4ZIrhrQAZYbBimj970B8yzJwSbuD",
+        "source_parent_folder_id": "0AFWQkaQQDzeEUk9PVA",
+        "source_file_count": 39,
+        "top_level_directories_sample": [
+          "kaggle_result",
+          "kaggle_result2",
+          "nezu-current"
+        ],
+        "stack_markers_detected_from_filenames": [
+          "python"
+        ],
+        "existing_root_collisions": [],
+        "note": "Metadata-only profile; upstream source files were not executed, reviewed line-by-line, or modified."
+      },
+      "original_drive_zip_modified": false
+    }
+  ],
+  "drive_delivery": {
+    "status": "uploaded",
+    "folder_name": "AI-Agency-Upgraded-Repos-v1",
+    "folder_id": "1AlfV7pZfGKgORF7VdNGOG-K-oJnO-oAS",
+    "folder_url": "https://drive.google.com/drive/folders/1AlfV7pZfGKgORF7VdNGOG-K-oJnO-oAS",
+    "uploaded_zip_count": 47,
+    "uploaded_zip_total_bytes": 763163855,
+    "original_archives_modified": 0
+  }
+}

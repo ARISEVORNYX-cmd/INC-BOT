@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0f17"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>Ari • INC AI Agency</title>
+<style>
+:root{--bg:#0b0f17;--card:#131a26;--line:#243044;--txt:#e8eef8;--mut:#8ea0bd;--acc:#2ed573;--acc2:#00c2ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(1000px 500px at 20% -10%,#16233a,var(--bg));color:var(--txt);font:15px/1.55 system-ui,sans-serif}.wrap{max-width:920px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:27px;margin:0 0 4px}h1 span{color:var(--acc)}h2{font-size:18px;margin:0 0 8px}.sub{color:var(--mut);margin:0 0 18px}.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.badge{background:#162034;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;color:var(--mut)}.badge b{color:var(--acc2)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 12px 40px #0006}textarea{width:100%;min-height:82px;background:#0d1420;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;resize:vertical;outline:none}textarea:focus{border-color:var(--acc2)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button{cursor:pointer;border:0;border-radius:10px;padding:10px 16px;font-weight:600;background:var(--acc);color:#04120a}button.blue{background:var(--acc2);color:#04121a}button.alt{background:#1d2a40;color:var(--txt);border:1px solid var(--line)}pre{white-space:pre-wrap;word-wrap:break-word;background:#0a111c;border:1px solid var(--line);border-radius:12px;padding:16px;min-height:90px;color:#dce8f8;font:13px/1.6 ui-monospace,Menlo,monospace}.meta{color:var(--mut);font-size:12px;margin-top:10px}
+</style></head>
+<body><div class="wrap">
+<h1>🤖 <span>Ari</span> — INC AI Agency</h1>
+<p class="sub">Personal AI + 66 general specialists + 56 sales-role profiles + Level-3 agent team.</p>
+<div class="badges"><div class="badge">Personal AI: <b>Ari</b></div><div class="badge">General specialists: <b>66</b></div><div class="badge">Sales roles: <b>56 / 4 departments</b></div><div class="badge">Sales mode: <b>draft-only</b></div></div>
+<div class="card"><h2>Ask Ari anything</h2><textarea id="q" placeholder="Kuch bhi pucho…">INC-BOT ke liye ek safe sales plan batao</textarea><div class="row"><button onclick="ask(false)">Pucho ✅</button><button class="blue" onclick="ask(true)">5-agent panel 🧠</button><button class="alt" onclick="startVoice()">Bolkar pucho 🎙️</button><button class="alt" onclick="speakAnswer()">Jawab suno 🔊</button><button class="alt" id="installApp" onclick="installPwa()">Phone par install / steps 📲</button></div></div>
+<div class="card"><h2>🏢 Sales agency — 56 role profiles / 4 departments</h2><p class="sub">Lead Generation → Outreach → Sales Calling → CRM Ops. Consent-first; no scraping, messages, calls, or CRM writes.</p>
+<textarea id="goal" placeholder="Sales goal">Qualify opt-in leads for an automation demo</textarea>
+<textarea id="leads" style="margin-top:10px;min-height:140px" placeholder="User-supplied leads as JSON">[{"id":"sample-1","company":"Example Co","name":"Sam","title":"Operations lead","email":"sam@example.com","phone":"+15550000000","source":"user supplied","intent":"exploring automation","email_opt_in":true,"whatsapp_opt_in":false,"phone_call_opt_in":false}]
+</textarea>
+<div class="row"><button class="blue" onclick="runSales()">Run safe preview ▶</button><button class="alt" onclick="departments()">Departments + 56 roles 📋</button></div></div>
+<div class="card"><pre id="out">Jawab yahan aayega…</pre><div class="meta" id="meta">APIs: <code>/api/ask</code> · <code>/api/sales</code></div><pre id="salesOut">Sales preview yahan dikhega…</pre></div>
+</div><script>
+const out=document.getElementById('out'),meta=document.getElementById('meta'),salesOut=document.getElementById('salesOut');
+async function post(path,body){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw new Error(d.error||`HTTP ${r.status}`);return d;}
+async function ask(panel){const q=document.getElementById('q').value;out.textContent='Soch raha hu…';try{const d=await post('/api/ask',{question:q,panel,use_model:true});out.textContent=d.answer||JSON.stringify(d,null,2);meta.textContent=`${d.agent||'Ari'} • ${d.model||'local'} • ${(d.specialists||[]).length} specialist(s)${d.provider_error?' • '+d.provider_error:''}`;}catch(e){out.textContent='Connection nahi hua: '+e.message;meta.textContent='offline / error';}}
+async function departments(){const [dr,ar]=await Promise.all([fetch('/api/sales?view=departments'),fetch('/api/sales?view=agents')]);const d=await dr.json(),a=await ar.json();salesOut.textContent=JSON.stringify({departments:d.departments,role_profiles:a.agents.map(({id,name,department,mission})=>({id,name,department,mission}))},null,2);}
+async function runSales(){let leads;try{leads=JSON.parse(document.getElementById('leads').value||'[]');}catch(e){salesOut.textContent='Lead JSON parse error: '+e;return;}salesOut.textContent='Running local consent-safe preview…';try{const d=await post('/api/sales',{goal:document.getElementById('goal').value,leads,channel:'email'});salesOut.textContent=JSON.stringify(d,null,2);}catch(e){salesOut.textContent='Preview error: '+e.message;}}
+let deferredInstall=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;});
+async function installPwa(){if(!deferredInstall){alert('iPhone: Safari Share → Add to Home Screen. Android: browser menu → Install app. HTTPS hosting required.');return;}deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;}
+function startVoice(){const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Recognition){alert('Voice input unsupported; please type or use Android Chrome.');return;}const rec=new Recognition();rec.lang='hi-IN';rec.interimResults=false;rec.maxAlternatives=1;rec.onstart=()=>{out.textContent='Sun raha hu…';};rec.onresult=e=>{document.getElementById('q').value=e.results[0][0].transcript;ask(false);};rec.onerror=e=>{out.textContent='Voice input error: '+e.error;};rec.start();}
+function speakAnswer(){if(!('speechSynthesis' in window)){alert('Text-to-speech unavailable in this browser.');return;}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(out.textContent);u.lang='hi-IN';window.speechSynthesis.speak(u);}
+if('serviceWorker' in navigator&&window.isSecureContext)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
+</script></body></html>
