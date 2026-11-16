@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "public": true,
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/manifest.webmanifest", "dest": "/manifest.webmanifest" },
+    { "src": "/service-worker.js", "dest": "/service-worker.js" },
+    { "src": "/icons/(.*)", "dest": "/icons/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}

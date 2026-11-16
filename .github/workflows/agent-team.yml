@@ -1,0 +1,56 @@
+name: Agent Team (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      goal:
+        description: "Goal to delegate to the Level-3 agent team"
+        required: true
+        default: "Audit INC-BOT and propose a safe improvement with tests"
+      offline:
+        description: "Run deterministic offline brain (no Gemini needed)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Test agent packages
+        run: |
+          python -m unittest discover -s agents/tests -v
+          python -m unittest discover -s agency/tests -v
+
+      - name: Run agent team
+        env:
+          GOAL: ${{ inputs.goal }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AGENT_TEAM_MODEL: ${{ vars.AGENT_TEAM_MODEL }}
+        run: |
+          set -euo pipefail
+          EXTRA=""
+          if [ "${{ inputs.offline }}" = "true" ] || [ -z "${GEMINI_API_KEY:-}" ]; then
+            EXTRA="--offline"
+          fi
+          python -m agents.cli "$GOAL" $EXTRA --approval deny --json > agent-team-result.json
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-team-report
+          path: |
+            agent-team-result.json
+            agents/runs/**/report.md
+            agents/runs/**/state.json
+          if-no-files-found: warn

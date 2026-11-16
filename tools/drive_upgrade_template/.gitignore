@@ -1,0 +1,4 @@
+# Private runtime memory and reports; do not commit API responses or chat history.
+.runtime/
+agents/runs/
+agency/.runtime/
