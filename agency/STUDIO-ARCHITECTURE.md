@@ -14,7 +14,7 @@
 ## User-confirmed build order and where Ari will be used
 
 1. **Personal Ari MVP first.** Make the single-user assistant useful for the owner's daily planning, Hinglish conversation, voice/chat, project notes and safe recommendations.
-2. **Use it privately on phone and laptop.** The intended surface is the responsive web app/PWA opened in a mobile or desktop browser. The current Vercel companion is only a local/preview prototype: it is not deployed and has no live private URL. Do not tell the owner to sign into a nonexistent production app.
+2. **Use it privately on phone and laptop.** The intended surface is the responsive web app/PWA opened in a mobile or desktop browser. Production is deployed at `https://inc-ari-agency.vercel.app`; Vercel access protection may require the owner's Vercel account first. Ari's owner magic-link sign-in and live privacy checks still need the owner to complete them in the same browser.
 3. **Then build the agency.** Curate 50–70 specialist role profiles total, then route work through Ari. These are not 50–70 separate model sessions; start with no more than five active specialist runs, and keep model, time and cost budgets bounded.
 4. **Android device actions are a separate, later capability.** A web page cannot operate other phone apps by itself. Use the local Termux companion only for allowlisted tasks with Android permissions and owner confirmation.
 
@@ -25,24 +25,24 @@ The reel mentioning OpenJarvis points to a relevant local-first personal-AI refe
 - `agency/creative/`: persona contract and creative QA/playbook; `agency/vercel/data/creative-sources.json` is the bundled ten-source reference catalog. No external code has been installed.
 - `agents/`: bounded Level-3 plan/research/code/review workflow with an approval gate.
 - `jarvis/`: Android/Termux companion and allowlisted local phone actions.
-- `agency/vercel/`: mobile PWA and serverless companion. The connected Vercel project exists but has not been deployed.
+- `agency/vercel/`: mobile PWA and serverless companion. The production deployment is ready on the connected Vercel project; live owner sign-in is unverified.
 
 Ari is the one persistent personal assistant. In the later agency phase, she can delegate a small number of tasks to specialist profiles; 50–70 does not mean 50–70 model calls running simultaneously.
 
-## Phase 1 — Personal Ari MVP (code built; preview-only)
-- The Vercel app shell now contains owner-email magic-link sign-in, server-side owner checks, secure HttpOnly cookies, chat UI, conversation history, and a deterministic planning preview. These are local repository changes, not a live service.
+## Phase 1 — Personal Ari MVP (production deployed; owner verification pending)
+- The Vercel app shell contains owner-email magic-link sign-in, server-side owner checks, secure HttpOnly cookies, chat UI, conversation history, and a deterministic planning preview. Vercel reports the production deployment `READY` with the default alias assigned; no live HTTP/browser sign-in test has been performed from this workspace.
 - Every stateful API is intended to require the single owner email. The static sign-in shell can load publicly; private chat data and API responses must remain inaccessible without an authenticated owner session.
 - Creative briefs can select up to three of ten reviewed repository references by fit. The selector does not install, execute or copy a source.
-- The 5-role review is one Ari response using role context, not five separate running agents. No autonomous workers, external search, lead capture, client contact, device action, file mutation, or asset upload is enabled. The approved cloud setup so far is limited to empty RLS-protected chat tables, one publishable key, the exact owner allowlist, and production Auth/origin configuration; no app deployment exists yet.
+- The 5-role review is one Ari response using role context, not five separate running agents. No autonomous workers, external search, lead capture, client contact, device action, file mutation, or asset upload is enabled. The approved cloud setup is limited to empty RLS-protected chat tables, one publishable key, the exact owner allowlist, production Auth/origin configuration, and the private Hobby deployment; no model key or personal chat row exists.
 - The existing Python `agency.app` is still unauthenticated; do not expose it.
-- The Vercel web app is not live yet: production runtime environment variables and Supabase Auth URL allow-list now target `https://inc-ari-agency.vercel.app`, but there is no owner Auth account or deployment yet. The owner has approved private/free hosting; no paid services or unauthenticated Python app exposure are authorized.
+- The Vercel web app is deployed to `https://inc-ari-agency.vercel.app`, with production environment variables and Supabase Auth URLs configured. There is no owner Auth account yet, and live login/account-isolation checks remain pending. The owner approved private/free hosting; no paid services or unauthenticated Python app exposure are authorized.
 
-## Phase 1B — private persistence/work queue (existing schema; app persistence pending cloud setup)
+## Phase 1B — private persistence/work queue (RLS schema applied; first owner sign-in pending)
 - Three additive migrations are now applied to the approved `Personal ai Project`: `20261116150351_create_studio_core`, `20261116150602_tighten_studio_table_grants`, and `20261116234854_create_ari_personal_memory`. The Ari conversation/message tables have RLS enabled and were verified empty after migration.
 - New tables: `studio_jobs` (plan/status/checkpoint and bounded attempts), append-only `studio_job_events`, `studio_approvals`, and metadata-only `studio_repo_sources` (Drive file references; no ZIP contents).
 - Every table has RLS scoped by `owner_id = auth.uid()`. Authenticated access is least-privilege; the queue tables do not grant hard-delete or truncate, and events are read/insert only. Use a `cancelled` job status rather than hard deletion.
 - The existing `assistant_memories` table was inspected at the schema/metadata level only. No existing rows were read, changed, or deleted.
-- Local migration `supabase/migrations/20261116234854_create_ari_personal_memory.sql` and server-side chat/auth code match the applied Supabase schema. The new tables are RLS-enabled and empty; no Auth account or personal chat row has been created. Supabase Auth Site URL/redirect allow-list and production Vercel environment variables are configured for `https://inc-ari-agency.vercel.app`, but no Vercel deployment exists yet. A publishable Supabase API key named `ari_web` is stored as a sensitive Vercel production variable; do not expose key values or claim the website is private until owner/non-owner access checks pass.
+- Local migration `supabase/migrations/20261116234854_create_ari_personal_memory.sql` and server-side chat/auth code match the applied Supabase schema. The new tables are RLS-enabled and empty; no Auth account or personal chat row has been created. Supabase Auth Site URL/redirect allow-list, production Vercel variables, and the production deployment are ready for `https://inc-ari-agency.vercel.app`. A publishable Supabase API key named `ari_web` is stored as a sensitive Vercel production variable; do not expose key values or claim the website's owner access has been live-verified until owner/non-owner checks pass.
 
 ## Phase 2 — AI agency (50–70 curated profiles; only after Personal Ari is useful)
 - Curate 50–70 specialist role profiles total from the existing templates; do not market the current 66 + 56 template libraries as 122 running AIs.
