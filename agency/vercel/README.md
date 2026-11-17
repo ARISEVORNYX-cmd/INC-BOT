@@ -1,6 +1,6 @@
 # Ari Personal AI — account-based private chat (local changes not yet deployed)
 
-Ari is a responsive web app, not a phone app. Users can create free email-link accounts; saved conversations are private to each signed-in account. This folder contains the PWA shell, same-origin server APIs, and Supabase-backed chat history. The currently deployed Production site is `https://inc-ari-agency.vercel.app`; this working-tree auth and signup update is **not yet deployed or live-tested**.
+Ari is a responsive web app, not a phone app. Users can create free email-link accounts; saved conversations are private to each signed-in account. This folder contains the PWA shell, same-origin server APIs, and Supabase-backed chat history. Production remains `https://inc-ari-agency.vercel.app`; the account-auth update is deployed only to a Vercel Preview, not promoted to Production or tested with a live email.
 
 ## Authentication and privacy
 
