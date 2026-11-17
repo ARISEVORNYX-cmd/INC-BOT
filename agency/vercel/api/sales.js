@@ -1,5 +1,6 @@
 // Consent-first sales agency: 56 specialist role profiles, draft-only workflow.
-const AGENTS = require('./sales-agents.json');
+const privateAuth=require('../_lib/private-auth');
+const AGENTS = require('../data/sales-agents.json');
 const DEPARTMENTS = [
   { id:'lead_generation', name:'Lead Generation', agent_count:16, purpose:'Qualify only user-supplied leads; no scraping or invented contacts.' },
   { id:'outreach', name:'Outreach Agents', agent_count:16, purpose:'Prepare opt-in message drafts; never send.' },
@@ -41,11 +42,17 @@ function run(body){
   return {...base,status:'draft_ready',summary:`Reviewed ${unique.length} supplied lead(s): ${qualified.length} qualified, ${excluded.length} excluded/needs research, ${duplicates} duplicate(s). Draft-only; nothing sent, called, or written.`,counts:{input:body.leads.length,valid_unique:unique.length,qualified:qualified.length,excluded_or_needs_research:excluded.length,duplicates,invalid_rows:invalid,draft_actions:outreach.length+calls.length+crm.length},lead_scores:qualified.concat(excluded),actions:{outreach,sales_calling:calls,crm_operations:crm},agents_used:AGENTS.filter(a=>['icp_research_analyst','lead_score_analyst','lead_data_validator','email_personalization_writer','consent_optout_guard','call_eligibility_verifier','call_script_drafter','crm_field_mapper','lead_stage_recommender'].includes(a.id))};
 }
 module.exports=async(req,res)=>{
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Headers','Content-Type');
-  res.setHeader('Access-Control-Allow-Methods','GET,POST,OPTIONS');
+  res.setHeader('Cache-Control','no-store, max-age=0');
   if(req.method==='OPTIONS')return res.status(204).end();
-  let body=req.body||{};if(typeof body==='string'){try{body=JSON.parse(body);}catch(_){body={};}}
+  if(req.method!=='GET'&&req.method!=='POST')return privateAuth.json(res,405,{error:'method_not_allowed'});
+  if(req.method==='POST'&&!privateAuth.requestIsSameOrigin(req))return privateAuth.json(res,403,{error:'same_origin_required'});
+  const owner=await privateAuth.requireOwner(req,res);if(!owner)return;
+  let body={};
+  if(req.method==='POST'){
+    const parsed=privateAuth.parseJsonBody(req,1000000);
+    if(parsed.error)return privateAuth.json(res,400,{error:parsed.error});
+    body=parsed.body;
+  }
   if(req.method==='GET'){
     const view=(req.query&&req.query.view)||'departments';
     if(view==='agents'){

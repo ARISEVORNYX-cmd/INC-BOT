@@ -1,37 +1,142 @@
 <!doctype html>
 <html lang="hi">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0f17"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png">
-<title>Ari • INC AI Agency</title>
-<style>
-:root{--bg:#0b0f17;--card:#131a26;--line:#243044;--txt:#e8eef8;--mut:#8ea0bd;--acc:#2ed573;--acc2:#00c2ff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(1000px 500px at 20% -10%,#16233a,var(--bg));color:var(--txt);font:15px/1.55 system-ui,sans-serif}.wrap{max-width:920px;margin:0 auto;padding:28px 18px 60px}
-h1{font-size:27px;margin:0 0 4px}h1 span{color:var(--acc)}h2{font-size:18px;margin:0 0 8px}.sub{color:var(--mut);margin:0 0 18px}.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.badge{background:#162034;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;color:var(--mut)}.badge b{color:var(--acc2)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 12px 40px #0006}textarea{width:100%;min-height:82px;background:#0d1420;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;resize:vertical;outline:none}textarea:focus{border-color:var(--acc2)}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button{cursor:pointer;border:0;border-radius:10px;padding:10px 16px;font-weight:600;background:var(--acc);color:#04120a}button.blue{background:var(--acc2);color:#04121a}button.alt{background:#1d2a40;color:var(--txt);border:1px solid var(--line)}pre{white-space:pre-wrap;word-wrap:break-word;background:#0a111c;border:1px solid var(--line);border-radius:12px;padding:16px;min-height:90px;color:#dce8f8;font:13px/1.6 ui-monospace,Menlo,monospace}.meta{color:var(--mut);font-size:12px;margin-top:10px}
-</style></head>
-<body><div class="wrap">
-<h1>🤖 <span>Ari</span> — INC AI Agency</h1>
-<p class="sub">Personal AI + 66 general specialists + 56 sales-role profiles + Level-3 agent team.</p>
-<div class="badges"><div class="badge">Personal AI: <b>Ari</b></div><div class="badge">General specialists: <b>66</b></div><div class="badge">Sales roles: <b>56 / 4 departments</b></div><div class="badge">Sales mode: <b>draft-only</b></div></div>
-<div class="card"><h2>Ask Ari anything</h2><textarea id="q" placeholder="Kuch bhi pucho…">INC-BOT ke liye ek safe sales plan batao</textarea><div class="row"><button onclick="ask(false)">Pucho ✅</button><button class="blue" onclick="ask(true)">5-agent panel 🧠</button><button class="alt" onclick="startVoice()">Bolkar pucho 🎙️</button><button class="alt" onclick="speakAnswer()">Jawab suno 🔊</button><button class="alt" id="installApp" onclick="installPwa()">Phone par install / steps 📲</button></div></div>
-<div class="card"><h2>🏢 Sales agency — 56 role profiles / 4 departments</h2><p class="sub">Lead Generation → Outreach → Sales Calling → CRM Ops. Consent-first; no scraping, messages, calls, or CRM writes.</p>
-<textarea id="goal" placeholder="Sales goal">Qualify opt-in leads for an automation demo</textarea>
-<textarea id="leads" style="margin-top:10px;min-height:140px" placeholder="User-supplied leads as JSON">[{"id":"sample-1","company":"Example Co","name":"Sam","title":"Operations lead","email":"sam@example.com","phone":"+15550000000","source":"user supplied","intent":"exploring automation","email_opt_in":true,"whatsapp_opt_in":false,"phone_call_opt_in":false}]
-</textarea>
-<div class="row"><button class="blue" onclick="runSales()">Run safe preview ▶</button><button class="alt" onclick="departments()">Departments + 56 roles 📋</button></div></div>
-<div class="card"><pre id="out">Jawab yahan aayega…</pre><div class="meta" id="meta">APIs: <code>/api/ask</code> · <code>/api/sales</code></div><pre id="salesOut">Sales preview yahan dikhega…</pre></div>
-</div><script>
-const out=document.getElementById('out'),meta=document.getElementById('meta'),salesOut=document.getElementById('salesOut');
-async function post(path,body){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw new Error(d.error||`HTTP ${r.status}`);return d;}
-async function ask(panel){const q=document.getElementById('q').value;out.textContent='Soch raha hu…';try{const d=await post('/api/ask',{question:q,panel,use_model:true});out.textContent=d.answer||JSON.stringify(d,null,2);meta.textContent=`${d.agent||'Ari'} • ${d.model||'local'} • ${(d.specialists||[]).length} specialist(s)${d.provider_error?' • '+d.provider_error:''}`;}catch(e){out.textContent='Connection nahi hua: '+e.message;meta.textContent='offline / error';}}
-async function departments(){const [dr,ar]=await Promise.all([fetch('/api/sales?view=departments'),fetch('/api/sales?view=agents')]);const d=await dr.json(),a=await ar.json();salesOut.textContent=JSON.stringify({departments:d.departments,role_profiles:a.agents.map(({id,name,department,mission})=>({id,name,department,mission}))},null,2);}
-async function runSales(){let leads;try{leads=JSON.parse(document.getElementById('leads').value||'[]');}catch(e){salesOut.textContent='Lead JSON parse error: '+e;return;}salesOut.textContent='Running local consent-safe preview…';try{const d=await post('/api/sales',{goal:document.getElementById('goal').value,leads,channel:'email'});salesOut.textContent=JSON.stringify(d,null,2);}catch(e){salesOut.textContent='Preview error: '+e.message;}}
-let deferredInstall=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;});
-async function installPwa(){if(!deferredInstall){alert('iPhone: Safari Share → Add to Home Screen. Android: browser menu → Install app. HTTPS hosting required.');return;}deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;}
-function startVoice(){const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Recognition){alert('Voice input unsupported; please type or use Android Chrome.');return;}const rec=new Recognition();rec.lang='hi-IN';rec.interimResults=false;rec.maxAlternatives=1;rec.onstart=()=>{out.textContent='Sun raha hu…';};rec.onresult=e=>{document.getElementById('q').value=e.results[0][0].transcript;ask(false);};rec.onerror=e=>{out.textContent='Voice input error: '+e.error;};rec.start();}
-function speakAnswer(){if(!('speechSynthesis' in window)){alert('Text-to-speech unavailable in this browser.');return;}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(out.textContent);u.lang='hi-IN';window.speechSynthesis.speak(u);}
-if('serviceWorker' in navigator&&window.isSecureContext)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
-</script></body></html>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1018">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; worker-src 'self'; object-src 'none'">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Ari — Private Personal Studio</title>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Ari home">
+        <img class="avatar" src="/icons/ari-avatar.png" alt="Ari, fictional humanoid-style AI avatar">
+        <span><strong>Ari</strong><small>PERSONAL STUDIO</small></span>
+      </a>
+      <div class="privacy-chip"><span class="status-dot"></span><span>OWNER-ONLY SIGN-IN</span></div>
+    </header>
+
+    <main>
+      <section id="loginView" class="login-view" aria-labelledby="loginTitle">
+        <div class="login-card">
+          <p class="eyebrow">YOUR PRIVATE AI WORKSPACE</p>
+          <h1 id="loginTitle">Namaste, main Ari hoon.</h1>
+          <p class="login-intro">Yeh tumhara personal studio companion hai. Sign-in ke baad hi chats aur workspace khulenge; Ari AI hai, insaan nahi.</p>
+
+          <form id="emailForm" class="auth-form" novalidate>
+            <label for="ownerEmail">Owner email</label>
+            <input id="ownerEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Apna owner email" required>
+            <button id="sendLinkButton" class="primary-button" type="submit" disabled>Sign-in link bhejo <span aria-hidden="true">→</span></button>
+          </form>
+
+          <div id="linkStep" class="link-step" hidden>
+            <div class="link-icon" aria-hidden="true">✉</div>
+            <p>Inbox mein aaya sign-in link <strong>isi browser</strong> mein kholo. Link ek baar hi kaam karega.</p>
+            <button id="changeEmailButton" class="text-button" type="button">Email dobara dalo</button>
+          </div>
+
+          <p id="authStatus" class="status-message" role="status" aria-live="polite">Private sign-in check ho raha hai…</p>
+          <div class="privacy-note">
+            <span aria-hidden="true">✦</span>
+            <p>Owner email allowlist + secure server session. Passwords ya payment details chat mein mat bhejo. Cloud model enable hone par prompt us model provider tak ja sakta hai.</p>
+          </div>
+          <p class="fine-print">Free hosting aur AI providers par quotas/terms ho sakte hain. Unlimited service ka promise nahi hai.</p>
+        </div>
+      </section>
+
+      <section id="appView" class="app-view" hidden aria-label="Ari private workspace">
+        <div class="app-heading">
+          <div>
+            <p class="eyebrow">PERSONAL ARI · PHASE ONE</p>
+            <h1>Apne ideas ko shape do.</h1>
+            <p class="subheading">Hinglish mein seedha sawaal pucho; Ari ek practical next step bhi suggest karega.</p>
+          </div>
+          <div class="account-actions">
+            <span id="signedInEmail" class="signed-in-email"></span>
+            <button id="installButton" class="quiet-button" type="button">Install app</button>
+            <button id="logoutButton" class="quiet-button" type="button">Sign out</button>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <aside class="history-panel" aria-label="Saved conversations">
+            <div class="history-heading">
+              <div><p class="eyebrow">PRIVATE MEMORY</p><h2>Recent chats</h2></div>
+              <button id="newChatButton" class="icon-button" type="button" aria-label="Start a new chat" title="New chat">＋</button>
+            </div>
+            <p id="memoryStatus" class="memory-status">Saved chats check ho rahe hain…</p>
+            <nav id="conversationList" class="conversation-list" aria-label="Conversation list"></nav>
+            <div class="storage-note"><span aria-hidden="true">▣</span><span>Chats tumhare Supabase account mein owner-only row security ke saath store hote hain.</span></div>
+          </aside>
+
+          <section class="chat-panel" aria-label="Ari chat">
+            <div class="chat-toolbar">
+              <div><span class="live-mark"></span><span id="chatTitle">New conversation</span></div>
+              <button id="deleteChatButton" class="text-button danger-text" type="button" hidden>Delete chat</button>
+            </div>
+
+            <div id="welcomeState" class="welcome-state">
+              <div class="welcome-orb"><img src="/icons/ari-avatar.png" alt=""></div>
+              <h2>Aaj kis cheez par kaam karein?</h2>
+              <p>Creative idea, coding, planning, ya kisi decision par ek clear recommendation maango.</p>
+              <div class="suggestion-row">
+                <button class="suggestion-button" type="button" data-prompt="Mere AI product ke liye ek clear, practical launch plan banao.">Launch plan ✦</button>
+                <button class="suggestion-button" type="button" data-prompt="Ek polished motion-design reel ke liye concept, timing aur visual hierarchy suggest karo.">Motion idea ◌</button>
+                <button class="suggestion-button" type="button" data-prompt="Meri website ka private-by-default security checklist review karo.">Security check ⛨</button>
+              </div>
+            </div>
+
+            <div id="messages" class="messages" aria-live="polite" aria-relevant="additions text"></div>
+            <p id="chatNotice" class="chat-notice" role="status" aria-live="polite"></p>
+
+            <form id="chatForm" class="composer">
+              <label class="visually-hidden" for="questionInput">Message Ari</label>
+              <textarea id="questionInput" rows="1" maxlength="4000" placeholder="Ari se kuch bhi pucho…" required></textarea>
+              <div class="composer-footer">
+                <span id="modelStatus" class="model-status">Local fallback available · cloud model not configured</span>
+                <div class="composer-actions">
+                  <button id="listenButton" class="quiet-button" type="button">Jawab suno</button>
+                  <button id="panelToggle" class="quiet-button" type="button" aria-pressed="false" title="Ek response mein paanch specialist roles ka perspective; alag agents nahi chalenge">5-role review</button>
+                  <button id="sendButton" class="send-button" type="submit" aria-label="Send message">Send <span aria-hidden="true">↑</span></button>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <details class="studio-card">
+          <summary><span class="summary-icon">✳</span><span><strong>Creative Studio plan</strong><small>Brief ko safe, practical workflow mein badlo — planning preview only.</small></span><span class="summary-arrow" aria-hidden="true">⌄</span></summary>
+          <div class="studio-content">
+            <label for="studioBrief">Creative ya product brief</label>
+            <textarea id="studioBrief" rows="3" maxlength="4000" placeholder="Deliverable, audience, format aur constraints likho…"></textarea>
+            <div class="studio-controls">
+              <label class="market-label" for="studioRegion">Market</label>
+              <select id="studioRegion">
+                <option>India + worldwide</option><option>India</option><option>Worldwide</option>
+              </select>
+              <button id="planButton" class="quiet-button" type="button">Plan preview banao</button>
+            </div>
+            <pre id="studioOut" class="studio-output" aria-live="polite">Yahan planning preview aayega…</pre>
+          </div>
+        </details>
+
+        <section class="trust-footer" aria-label="Privacy and status">
+          <div><span class="trust-icon">⌑</span><p><strong>Private account gate</strong><br>Protected API + owner allowlist. Login screen public ho sakti hai; chat data login ke bina nahi milta.</p></div>
+          <div><span class="trust-icon">◌</span><p><strong>Honest AI status</strong><br>Free model key configured na ho to Ari local fallback use karega. Free tiers ki quotas aur provider policies hoti hain.</p></div>
+          <div><span class="trust-icon">◇</span><p><strong>Agency phase two</strong><br>50–70 role profiles planned hain; woh abhi running AI agents nahi hain.</p></div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="page-footer">Ari is a fictional, humanoid-style AI companion. External actions, cloud writes, client contact, payments aur production deployment approval ke bina nahi hote.</footer>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

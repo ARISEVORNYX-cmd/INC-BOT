@@ -1,10 +1,13 @@
-/* Offline app shell only. API requests are intentionally never cached. */
-const CACHE_NAME = 'ari-ai-agency-shell-v1';
+/* Cache only the public application shell. Authentication APIs and personal chats are never cached. */
+const CACHE_NAME = 'ari-private-shell-v2';
 const SHELL = [
   '/',
+  '/styles.css',
+  '/app.js',
   '/manifest.webmanifest',
   '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/icons/icon-512.png',
+  '/icons/ari-avatar.png'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
