@@ -1,12 +1,12 @@
 """VC awaaz chain ka Termux self-test — bina Discord VC join kiye.
 
-Ek jaani-pehchani line ko awaaz banakar bilkul waisi hi chain chalata hai
-jaisi asli VC me chalti hai: opus encode -> decode -> mono/WAV -> STT.
-Output padh ke pata chalega dikkat kaha hai (STT net? Gemini key? decode?).
+Ek jaani-pehchani line ko awaaz banakar asli VC jaisi chain chalata hai:
+opus encode -> decode -> mono/WAV -> keyless Google STT.
+AI chat ka provider Pollinations hai; is test ko kisi Gemini key ki zaroorat nahi.
 
 Chalao:  python vc_selftest.py
 """
-import asyncio, io, os, struct, subprocess, sys, tempfile, wave
+import asyncio, os, struct, subprocess, sys, tempfile, wave
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault("DISCORD_BOT_TOKEN", "x")
 
@@ -15,7 +15,7 @@ LINE = "Nezuko tum kaisi ho, aaj mausam kaisa hai"
 async def main():
     import bot as b
     print("=== VC SELF TEST ===")
-    print("1) Gemini key set hai:", bool(b.GEMINI_API_KEY))
+    print("1) Voice STT: keyless Google SpeechRecognition")
     # 2) Ek jaani hui awaaz banao (edge-tts, ladki wali Hindi awaaz)
     tmp = tempfile.mkdtemp()
     mp3 = os.path.join(tmp, "line.mp3"); wav = os.path.join(tmp, "line.wav")
@@ -44,21 +44,17 @@ async def main():
     vals = struct.unpack("<%dh" % (len(decoded) // 2), bytes(decoded[:len(decoded)//2*2]))
     rms = int((sum(v * v for v in vals) / max(1, len(vals))) ** 0.5)
     print("   awaaz level rms =", rms, "(300-4000 saaf boli hoti hai)")
-    # 4) Bot wale STT chalao — Google free aur Gemini dono
-    wav16 = b._pcm_to_wav(bytes(decoded)); wav48 = b._pcm_to_wav_48k(bytes(decoded), 1)
-    g = ""
-    try: g = b._stt_google_free(wav16, quick=True)
+    # 4) Bot ka keyless Google STT path chalao
+    wav16 = b._pcm_to_wav(bytes(decoded))
+    transcript = ""
+    try: transcript = await b._stt_first_try(wav16)
     except Exception as e: print("   Google STT error:", type(e).__name__, e)
-    print("4) Google-free STT ne suna:", repr(g))
-    gm = ""
-    try: gm = await b._stt_gemini(wav48)
-    except Exception as e: print("   Gemini STT error:", type(e).__name__, e)
-    print("5) Gemini STT ne suna:", repr(gm))
+    print("4) Google-free STT ne suna:", repr(transcript))
     print()
-    if g or gm:
-        print("RESULT: STT chain SAHI hai — asli VC me dikkat awaaz ke packets/decode ki hai.")
+    if transcript:
+        print("RESULT: STT chain SAHI hai — asli VC me dikkat awaaz ke packets/decode ki ho sakti hai.")
     else:
-        print("RESULT: STT hi nahi sun pa raha — upar wali lines bata dengi wajah (key? net? awaaz gadbad?).")
+        print("RESULT: STT ne transcript nahi diya — network ya awaaz ki quality check karo.")
     print("Bolna tha:", repr(LINE))
 
 asyncio.run(main())

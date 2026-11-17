@@ -147,6 +147,82 @@ class TestBotCode(unittest.TestCase):
         self.assertIsNone(sent["view"])
         print("    DM text preview:", sent["text"].splitlines()[0])
 
+    def test_8_pollinations_receives_chat_history_as_messages(self):
+        self._run(self._pollinations_payload_case())
+
+    async def _pollinations_payload_case(self):
+        captured = {}
+
+        class FakeResponse:
+            status = 200
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *exc):
+                return False
+
+            async def text(self):
+                return "A free-provider answer"
+
+        class FakeSession:
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *exc):
+                return False
+
+            def post(self, url, **kwargs):
+                captured["url"] = url
+                captured["payload"] = kwargs["json"]
+                return FakeResponse()
+
+        with mock.patch.object(botmod, "_POLLINATIONS_NEXT_REQUEST_AT", 0.0):
+            with mock.patch.object(botmod, "_sess", return_value=FakeSession()):
+                answer = await botmod._ask_pollinations(
+                    "current question",
+                    mode="chat",
+                    lang="Hindi",
+                    history=[
+                        {"role": "user", "parts": [{"text": "previous question"}]},
+                        {"role": "model", "parts": [{"text": "previous answer"}]},
+                    ],
+                )
+        self.assertEqual(answer, "A free-provider answer")
+        self.assertEqual(captured["url"], "https://text.pollinations.ai/")
+        messages = captured["payload"]["messages"]
+        self.assertEqual([m["role"] for m in messages], ["system", "user", "assistant", "user"])
+        self.assertIn("Hindi", messages[0]["content"])
+        self.assertEqual(messages[-1]["content"], "current question")
+
+    def test_9_ai_uses_pollinations_even_if_a_gemini_env_key_exists(self):
+        self._run(self._ai_provider_case())
+
+    async def _ai_provider_case(self):
+        with mock.patch.dict(os.environ, {"GEMINI_API_KEY": "must-not-be-used"}):
+            with mock.patch.object(botmod, "_ask_pollinations", new=mock.AsyncMock(return_value="free answer")) as ask:
+                answer = await botmod._ask_ai_fast("hello", mode="chat", lang="English")
+        self.assertEqual(answer, "free answer")
+        ask.assert_awaited_once_with("hello", mode="chat", lang="English", history=None)
+        self.assertFalse(hasattr(botmod, "GEMINI_API_KEY"))
+
+    def test_10_chat_language_mirrors_hinglish_and_short_followups(self):
+        self.assertEqual(botmod._detect_chat_language("But hosting ho gyi?"), "Hinglish")
+        history = [{"role": "user", "parts": [{"text": "But hosting ho gyi?"}]}]
+        self.assertEqual(botmod._detect_chat_language("24/7 hosting", history), "Hinglish")
+        self.assertEqual(botmod._detect_chat_language("मतलब क्या हुआ?"), "Hindi")
+        self.assertEqual(botmod._detect_chat_language("Is the bot online?"), "English")
+
+    def test_11_chat_prompt_answers_directly_and_disambiguates_matlab(self):
+        system = botmod._ai_system("chat", "Auto")
+        self.assertIn("answer the user's actual message first", system)
+        self.assertIn("latest user message", system)
+        self.assertIn("'matlab' commonly means", system)
+        self.assertIn("unless the user clearly asks about MATLAB", system)
+        self.assertIn("Do not claim that hosting, 24/7 uptime", system)
+        self.assertNotIn("Always reply in English only", system)
+        self.assertIn("Reply in Hinglish", botmod._ai_system("chat", "Hinglish"))
+
     def _run(self, coro):
         asyncio.run(coro)
 if __name__ == "__main__":
