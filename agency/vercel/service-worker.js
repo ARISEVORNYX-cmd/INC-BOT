@@ -1,5 +1,5 @@
 /* Cache only the public application shell. Authentication APIs and personal chats are never cached. */
-const CACHE_NAME = 'ari-private-shell-v2';
+const CACHE_NAME = 'ari-private-shell-v3';
 const SHELL = [
   '/',
   '/styles.css',
@@ -21,6 +21,10 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin || url.pathname.startsWith('/api/')) return;
   if (request.mode === 'navigate') {
+    if (url.pathname !== '/' && url.pathname !== '/index.html') {
+      event.respondWith(fetch(request));
+      return;
+    }
     event.respondWith(fetch(request).then(response => {
       if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put('/', response.clone()));
       return response;

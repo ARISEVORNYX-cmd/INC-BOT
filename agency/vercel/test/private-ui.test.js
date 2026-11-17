@@ -25,8 +25,9 @@ test('browser code keeps user text as text and does not persist Supabase tokens 
   assert.match(client, /history\.replaceState/);
 });
 
-test('service worker caches only application shell and explicitly skips API requests', () => {
-  assert.match(worker, /ari-private-shell-v2/);
+test('service worker caches only the private app shell, skipping APIs and demo navigation', () => {
+  assert.match(worker, /ari-private-shell-v3/);
   assert.match(worker, /url\.pathname\.startsWith\('\/api\/'\)/);
+  assert.match(worker, /url\.pathname !== '\/' && url\.pathname !== '\/index\.html'/);
   assert.match(worker, /never cached/i);
 });

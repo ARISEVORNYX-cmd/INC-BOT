@@ -12,6 +12,12 @@ Personal Ari is phase 1. The planned 50–70 specialist profiles are phase 2 and
 - The login page itself can load publicly. Chat contents and server features must remain unavailable without the owner email. Avoid pasting passwords, payment details, health records, or other high-risk secrets.
 - If a cloud model is enabled, the question and bounded recent history are sent to that provider. OpenRouter is optional, `store: false` is requested, and provider retention policies still apply. Production explicitly sets `AI_PROVIDER=local`, so the app uses its local path. Vercel lists a sensitive `OPENROUTER_API_KEY` variable for production; its value has not been inspected, so do not infer that it is empty or usable.
 
+## Safe UI demo (Preview deployments only)
+
+Append `/demo` to a Vercel **Preview** deployment URL to open the test sandbox. Vercel SSO may still require the project owner's Vercel account. The page handler serves the demo only when `VERCEL_ENV=preview`; `/demo` returns 404 in Production and Development. The production homepage and its owner login are unchanged.
+
+The demo uses fictional sample conversations and fixed scripted replies. After the page and its same-origin assets load, its browser code makes no API/network calls, does not use Supabase, private chat history, the model provider, or browser storage, and resets on reload. It lets you inspect the interface and basic controls only; it does not prove owner authentication, data isolation, or real AI behavior. Never enter real personal information in it.
+
 ## Required owner setup before any live use
 
 1. Configure these **server-side** Vercel Environment Variables for Production (and Preview only if needed):
@@ -55,10 +61,11 @@ For Claude Desktop, the project's docs describe **Setup → Gateway**, a bare ga
 - `api/auth.js`, `_lib/private-auth.js` — allowlisted magic-link proxy, owner check, refresh handling, and HttpOnly cookie session.
 - `api/chats.js` — owner-scoped chat list/read/save/delete operations through Supabase RLS.
 - `api/ask.js` — Hinglish responses, bounded history, optional free-model request, and offline fallback.
-- `api/studio.js` — deterministic, side-effect-free planning preview.
+- `api/studio.js` — owner-protected deterministic planning preview.
+- `api/demo-page.js`, `demo.js`, `demo.css` — Preview-only, fictional interface sandbox; fixed local responses, no private APIs or storage.
 - `api/sales.js` — consent-first preview only; no scraping, sending, calling, or CRM writes.
 - `data/` — role and creative reference catalogues, outside the public API directory.
-- `service-worker.js` — app-shell caching only; never caches chat/API responses.
+- `service-worker.js` — caches only the app root shell; API and non-root demo navigation are not cached.
 - `vercel.json` — routes and security headers.
 
 ## Local developer checks
