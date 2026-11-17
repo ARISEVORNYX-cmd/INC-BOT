@@ -53,7 +53,7 @@
     <div class="steps">
       <div class="step"><div class="step-icon" aria-hidden="true">V</div><div><div class="step-title">Vercel Hobby</div><div class="step-desc">The existing project is configured for the free-first setup; usage caps and platform rules still apply.</div></div><div class="step-state">Configured</div></div>
       <div class="step"><div class="step-icon" aria-hidden="true">S</div><div><div class="step-title">Supabase</div><div class="step-desc">The database is healthy and owner-scoped tables are ready. Free-tier availability is not guaranteed to be always-on.</div></div><div class="step-state">RLS enabled</div></div>
-      <div class="step"><div class="step-icon" aria-hidden="true">AI</div><div><div class="step-title">AI provider</div><div class="step-desc">Production uses Ari's local deterministic fallback. No cloud model key is configured, so generative model answers are not enabled.</div></div><div class="step-state">Local only</div></div>
+      <div class="step"><div class="step-icon" aria-hidden="true">AI</div><div><div class="step-title">AI provider</div><div class="step-desc">Production selects Ari's local deterministic fallback with <code>AI_PROVIDER=local</code>. Vercel lists a sensitive <code>OPENROUTER_API_KEY</code> variable, but its value has not been inspected; the local provider setting keeps the app from invoking it.</div></div><div class="step-state">Local provider</div></div>
     </div>
   </section>
 
@@ -66,7 +66,7 @@
     <div class="panel-head"><div><h2 id="log-title">Recent setup</h2><p class="panel-intro">Only completed configuration and checks are listed.</p></div><span class="tag">NO PERSONAL DATA</span></div>
     <div class="log-list">
       <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Owner-scoped chat schema applied<small>RLS verified on both tables · 0 conversation/message rows</small></div></div>
-      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Production Auth and origin configured<small>Single owner allowlist · exact Vercel origin · no model key</small></div></div>
+      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Production Auth and origin configured<small>Single owner allowlist · exact Vercel origin · local provider · key value unverified</small></div></div>
       <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Local app tests passed<small>41 Vercel tests · auth/provider calls mocked; no live AI call</small></div></div>
     </div>
   </section>

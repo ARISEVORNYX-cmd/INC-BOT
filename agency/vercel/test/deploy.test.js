@@ -19,6 +19,9 @@ test('Ari hosting dashboard reports configured privacy setup and the unverified 
   assert.match(html, /live sign-in or database isolation/);
   assert.match(html, /No sign-in link has been sent/);
   assert.match(html, /not unlimited service/i);
+  assert.match(html, /AI_PROVIDER=local/);
+  assert.match(html, /OPENROUTER_API_KEY/);
+  assert.match(html, /value has not been inspected/);
   assert.doesNotMatch(html, /Nothing deployed yet|NO CLOUD WRITES|Antideploy/);
 });
 
