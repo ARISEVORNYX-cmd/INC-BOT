@@ -9,6 +9,9 @@
   const linkStep = $('linkStep');
   const emailInput = $('accountEmail');
   const sendLinkButton = $('sendLinkButton');
+  const oauthOptions = $('oauthOptions');
+  const oauthSetupNote = $('oauthSetupNote');
+  const oauthButtons = Array.from(document.querySelectorAll('[data-oauth-provider]'));
   const conversationList = $('conversationList');
   const messagesBox = $('messages');
   const welcomeState = $('welcomeState');
@@ -29,6 +32,7 @@
   let panelMode = false;
   let memoryReady = false;
   let installPrompt = null;
+  let availableOAuthProviders = new Set();
 
   class ApiError extends Error {
     constructor(message, status, code) {
@@ -52,6 +56,28 @@
     return data;
   }
 
+  function setOAuthAvailability(providers, fallbackMessage = '') {
+    availableOAuthProviders = new Set((Array.isArray(providers) ? providers : []).filter(provider => ['google', 'discord'].includes(provider)));
+    for (const button of oauthButtons) {
+      const isAvailable = availableOAuthProviders.has(button.dataset.oauthProvider);
+      button.hidden = !isAvailable;
+      button.disabled = !isAvailable;
+    }
+    oauthOptions.hidden = availableOAuthProviders.size === 0;
+    oauthSetupNote.hidden = availableOAuthProviders.size > 0 && !fallbackMessage;
+    if (oauthSetupNote.hidden) return;
+    oauthSetupNote.textContent = fallbackMessage || 'Google ya Discord sign-in ko pehle Supabase mein configure karna hoga. Abhi email link se continue kar sakte ho.';
+  }
+
+  async function loadOAuthProviders() {
+    try {
+      const data = await requestJson('/api/auth?action=providers');
+      setOAuthAvailability(data.providers);
+    } catch (_) {
+      setOAuthAvailability([], 'Social sign-in ka status abhi check nahi ho paaya. Email link se continue kar sakte ho.');
+    }
+  }
+
   function showLogin(message, disableSignIn = false) {
     signedInUser = null;
     conversations = [];
@@ -65,6 +91,7 @@
     renderTranscript();
     renderConversations();
     sendLinkButton.disabled = disableSignIn;
+    for (const button of oauthButtons) button.disabled = disableSignIn || !availableOAuthProviders.has(button.dataset.oauthProvider);
     authStatus.textContent = message || 'Free account sign-in ready. Apna email dalo.';
   }
 
@@ -224,6 +251,31 @@
       sendLinkButton.disabled = false;
     }
   });
+
+  for (const button of oauthButtons) {
+    button.addEventListener('click', async () => {
+      const provider = button.dataset.oauthProvider;
+      if (!availableOAuthProviders.has(provider)) return;
+      const providerName = provider === 'google' ? 'Google' : 'Discord';
+      for (const socialButton of oauthButtons) socialButton.disabled = true;
+      sendLinkButton.disabled = true;
+      authStatus.textContent = `${providerName} se secure sign-in shuru ho raha hai…`;
+      try {
+        const data = await requestJson('/api/auth', {
+          method: 'POST',
+          body: JSON.stringify({ action: 'start_oauth', provider })
+        });
+        if (typeof data.authorizationUrl !== 'string') throw new Error('Secure sign-in URL nahi mila. Email link try karo.');
+        window.location.assign(data.authorizationUrl);
+      } catch (error) {
+        authStatus.textContent = error.message || `${providerName} sign-in start nahi hua. Email link try karo.`;
+        for (const socialButton of oauthButtons) {
+          socialButton.disabled = !availableOAuthProviders.has(socialButton.dataset.oauthProvider);
+        }
+        sendLinkButton.disabled = false;
+      }
+    });
+  }
 
   $('changeEmailButton').addEventListener('click', () => {
     linkStep.hidden = true;
@@ -402,7 +454,7 @@
     // Remove one-time auth material from the address bar before making any API request.
     window.history.replaceState({}, document.title, window.location.pathname);
     if (errorDescription) {
-      showLogin('Email sign-in link expire ya invalid ho gaya. Naya link mangwa lo.');
+      showLogin('Sign-in cancel ya fail hua. Dobara try karo, ya email link use karo.');
       return true;
     }
     if (!code && (!accessToken || !refreshToken)) {
@@ -410,7 +462,7 @@
       return true;
     }
 
-    authStatus.textContent = 'Email link verify ho raha hai…';
+    authStatus.textContent = 'Secure sign-in verify ho raha hai…';
     try {
       const payload = { action: 'exchange_link' };
       if (code) payload.code = code;
@@ -421,7 +473,7 @@
       });
       showApp(data.user);
     } catch (error) {
-      showLogin(error.message || 'Sign-in link accept nahi hua. Naya link try karo.');
+      showLogin(error.message || 'Sign-in complete nahi hua. Dobara try karo ya email link mangwao.');
     }
     return true;
   }
@@ -430,7 +482,11 @@
     if ('serviceWorker' in navigator && window.isSecureContext) {
       window.addEventListener('load', () => navigator.serviceWorker.register('/service-worker.js').catch(() => {}));
     }
-    if (await consumeMagicLink()) return;
+    if (await consumeMagicLink()) {
+      if (!signedInUser) await loadOAuthProviders();
+      return;
+    }
+    await loadOAuthProviders();
     try {
       const data = await requestJson('/api/auth?action=session');
       sendLinkButton.disabled = false;

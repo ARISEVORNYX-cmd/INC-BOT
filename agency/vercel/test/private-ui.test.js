@@ -31,6 +31,19 @@ test('login uses twelve original CSS-only website 3D accents as decorative, acce
   assert.doesNotMatch(html + css, /three\.js|sketchfab|<model-viewer/i);
 });
 
+test('Google and Discord sign-in controls stay provider-gated and start the same-origin PKCE flow', () => {
+  assert.match(html, /data-oauth-provider="google"/);
+  assert.match(html, /data-oauth-provider="discord"/);
+  assert.match(html, /id="oauthSetupNote"/);
+  assert.match(html, /Secure sign-in \+ server session/);
+  assert.match(css, /\.oauth-button \{[^}]*min-height: 48px/);
+  assert.match(css, /button:focus-visible[^}]*outline: 2px solid var\(--blue\)/);
+  assert.match(client, /\/api\/auth\?action=providers/);
+  assert.match(client, /action:\s*'start_oauth'/);
+  assert.match(client, /window\.location\.assign\(data\.authorizationUrl\)/);
+  assert.match(client, /errorDescription/);
+});
+
 test('browser code keeps user text as text, handles PKCE callbacks, and does not persist tokens locally', () => {
   assert.match(client, /bubble\.textContent\s*=/);
   assert.doesNotMatch(client, /\.innerHTML\s*=|localStorage|sessionStorage|SUPABASE_(?:ANON|PUBLISHABLE)_KEY|service_role/i);
@@ -41,7 +54,7 @@ test('browser code keeps user text as text, handles PKCE callbacks, and does not
 });
 
 test('service worker caches only the private app shell, skipping APIs and demo navigation', () => {
-  assert.match(worker, /ari-private-shell-v4/);
+  assert.match(worker, /ari-private-shell-v5/);
   assert.match(worker, /url\.pathname\.startsWith\('\/api\/'\)/);
   assert.match(worker, /url\.pathname !== '\/' && url\.pathname !== '\/index\.html'/);
   assert.match(worker, /never cached/i);

@@ -21,6 +21,15 @@ module.exports = async function auth(req, res) {
 
   if (req.method === 'GET') {
     const action = String(req.query && req.query.action || 'session');
+    if (action === 'providers') {
+      const config = privateAuth.getConfig();
+      if (!config) return privateAuth.json(res, 200, { providers: [] });
+      const available = await privateAuth.getOAuthProviders(config);
+      if (available.status < 200 || available.status >= 300) {
+        return privateAuth.json(res, 503, { error: 'oauth_status_unavailable', providers: [] });
+      }
+      return privateAuth.json(res, 200, { providers: available.providers });
+    }
     if (action !== 'session') return privateAuth.json(res, 400, { error: 'invalid_action' });
     const user = await privateAuth.requireUser(req, res);
     if (!user) return;
@@ -44,6 +53,32 @@ module.exports = async function auth(req, res) {
   }
 
   if (!config) return privateAuth.json(res, 503, { error: 'private_auth_not_configured', message: 'Private sign-in is not configured.' });
+
+  if (action === 'start_oauth') {
+    const provider = String(body.provider || '').trim().toLowerCase();
+    if (!['google', 'discord'].includes(provider)) {
+      return privateAuth.json(res, 400, { error: 'unsupported_oauth_provider' });
+    }
+    const redirectTo = privateAuth.getRequestOrigin(req);
+    if (!redirectTo) return privateAuth.json(res, 400, { error: 'invalid_redirect_origin' });
+    const available = await privateAuth.getOAuthProviders(config);
+    if (available.status < 200 || available.status >= 300) {
+      return privateAuth.json(res, 503, { error: 'oauth_status_unavailable', message: 'Social sign-in is temporarily unavailable. Use email sign-in instead.' });
+    }
+    if (!available.providers.includes(provider)) {
+      const providerName = provider === 'google' ? 'Google' : 'Discord';
+      return privateAuth.json(res, 409, {
+        error: 'oauth_provider_not_enabled',
+        message: `${providerName} sign-in is not configured for this Ari deployment yet. Use email sign-in for now.`
+      });
+    }
+
+    const { verifier, challenge } = privateAuth.createPkcePair();
+    const authorizationUrl = privateAuth.createOAuthAuthorizeUrl(config, provider, redirectTo, challenge);
+    if (!authorizationUrl) return privateAuth.json(res, 400, { error: 'invalid_oauth_request' });
+    privateAuth.setPkceCookie(req, res, verifier);
+    return privateAuth.json(res, 200, { authorizationUrl });
+  }
 
   if (action === 'send_link') {
     const email = privateAuth.normalizeEmail(body.email);

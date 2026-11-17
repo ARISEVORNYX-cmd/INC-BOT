@@ -20,54 +20,86 @@
         <img class="avatar" src="/icons/ari-avatar.png" alt="Ari, fictional humanoid-style AI avatar">
         <span><strong>Ari</strong><small>PERSONAL STUDIO</small></span>
       </a>
-      <div class="privacy-chip"><span class="status-dot"></span><span>PRIVATE ACCOUNT SIGN-IN</span></div>
+      <div class="privacy-chip"><span class="status-dot"></span><span>Private account sign-in</span></div>
     </header>
 
     <main>
       <section id="loginView" class="login-view" aria-labelledby="loginTitle">
         <div class="login-card">
-          <div class="web-3d-scene" aria-hidden="true">
-            <span class="scene-ring scene-ring-one"></span>
-            <span class="scene-ring scene-ring-two"></span>
-            <div class="scene-asset scene-browser" data-scene-asset>
-              <span class="browser-top"><i></i><i></i><i></i></span>
-              <span class="browser-lines"><i></i><i></i><i></i></span>
+          <section class="login-showcase" aria-labelledby="loginTitle">
+            <p class="eyebrow">A private space for your ideas</p>
+            <h1 id="loginTitle">Namaste, main Ari hoon.</h1>
+            <p class="login-intro">Ideas, planning, ya coding par Hinglish mein kaam karo. Tumhare saved chats tumhare account ke saath rehte hain.</p>
+
+            <div class="web-3d-scene" aria-hidden="true">
+              <span class="scene-ring scene-ring-one"></span>
+              <span class="scene-ring scene-ring-two"></span>
+              <div class="scene-asset scene-browser" data-scene-asset>
+                <span class="browser-top"><i></i><i></i><i></i></span>
+                <span class="browser-lines"><i></i><i></i><i></i></span>
+              </div>
+              <div class="scene-asset scene-phone" data-scene-asset><span class="phone-screen"><i></i><i></i></span></div>
+              <div class="scene-asset scene-orb" data-scene-asset><span></span></div>
+              <div class="scene-asset scene-cube" data-scene-asset><i class="cube-front"></i><i class="cube-side"></i><i class="cube-top"></i></div>
+              <div class="scene-asset scene-code" data-scene-asset>&lt;/&gt;</div>
+              <div class="scene-asset scene-database" data-scene-asset><i></i><i></i><i></i></div>
+              <div class="scene-asset scene-chart" data-scene-asset><i></i><i></i><i></i><i></i></div>
+              <div class="scene-asset scene-play" data-scene-asset><span>▶</span></div>
+              <div class="scene-asset scene-layers" data-scene-asset><i></i><i></i><i></i></div>
+              <div class="scene-asset scene-cloud" data-scene-asset><span></span></div>
+              <div class="scene-asset scene-globe" data-scene-asset><span></span></div>
+              <div class="scene-asset scene-cursor" data-scene-asset>↖</div>
+              <span class="scene-caption">12 web-inspired 3D accents</span>
             </div>
-            <div class="scene-asset scene-phone" data-scene-asset><span class="phone-screen"><i></i><i></i></span></div>
-            <div class="scene-asset scene-orb" data-scene-asset><span></span></div>
-            <div class="scene-asset scene-cube" data-scene-asset><i class="cube-front"></i><i class="cube-side"></i><i class="cube-top"></i></div>
-            <div class="scene-asset scene-code" data-scene-asset>&lt;/&gt;</div>
-            <div class="scene-asset scene-database" data-scene-asset><i></i><i></i><i></i></div>
-            <div class="scene-asset scene-chart" data-scene-asset><i></i><i></i><i></i><i></i></div>
-            <div class="scene-asset scene-play" data-scene-asset><span>▶</span></div>
-            <div class="scene-asset scene-layers" data-scene-asset><i></i><i></i><i></i></div>
-            <div class="scene-asset scene-cloud" data-scene-asset><span></span></div>
-            <div class="scene-asset scene-globe" data-scene-asset><span></span></div>
-            <div class="scene-asset scene-cursor" data-scene-asset>↖</div>
-            <span class="scene-caption">12 web-inspired 3D accents</span>
-          </div>
-          <p class="eyebrow">YOUR PRIVATE AI WORKSPACE</p>
-          <h1 id="loginTitle">Namaste, main Ari hoon.</h1>
-          <p class="login-intro">Apna free account email se banao. Sign-in ke baad tumhare chats sirf tumhare account ko dikhte hain; Ari AI hai, insaan nahi.</p>
 
-          <form id="emailForm" class="auth-form" novalidate>
-            <label for="accountEmail">Email address</label>
-            <input id="accountEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Apna email address" required>
-            <button id="sendLinkButton" class="primary-button" type="submit" disabled>Sign-in link bhejo <span aria-hidden="true">→</span></button>
-          </form>
+            <div class="showcase-points" aria-label="Ari workspace features">
+              <div class="showcase-point"><span class="point-index" aria-hidden="true">01</span><strong>Free account</strong><span>Email sign-in, no password</span></div>
+              <div class="showcase-point"><span class="point-index" aria-hidden="true">02</span><strong>Private chats</strong><span>Saved per signed-in account</span></div>
+              <div class="showcase-point"><span class="point-index" aria-hidden="true">03</span><strong>Hinglish AI</strong><span>Practical answers and next steps</span></div>
+            </div>
+          </section>
 
-          <div id="linkStep" class="link-step" hidden>
-            <div class="link-icon" aria-hidden="true">✉</div>
-            <p>Inbox mein aaya sign-in link <strong>isi browser</strong> mein kholo. Link ek baar hi kaam karega.</p>
-            <button id="changeEmailButton" class="text-button" type="button">Email dobara dalo</button>
-          </div>
+          <section class="login-panel" aria-labelledby="signinTitle">
+            <div class="login-panel-heading">
+              <p class="eyebrow">Get started</p>
+              <h2 id="signinTitle">Apna account kholo.</h2>
+              <p>Google, Discord, ya email se continue karo.</p>
+            </div>
 
-          <p id="authStatus" class="status-message" role="status" aria-live="polite">Private sign-in check ho raha hai…</p>
-          <div class="privacy-note">
-            <span aria-hidden="true">✦</span>
-            <p>Email link + secure server session; saved chats are isolated per account with Supabase row-level security. Passwords ya payment details chat mein mat bhejo. Cloud model enable hone par prompt us model provider tak ja sakta hai.</p>
-          </div>
-          <p class="fine-print">Free hosting aur AI providers par quotas/terms ho sakte hain. Unlimited service ka promise nahi hai.</p>
+            <div id="oauthOptions" class="oauth-options" role="group" aria-label="Social sign-in options" hidden>
+              <button id="googleOAuthButton" class="oauth-button" type="button" data-oauth-provider="google" hidden>
+                <span class="provider-mark google-mark" aria-hidden="true">G</span>
+                <span class="oauth-label">Continue with Google</span>
+                <span class="oauth-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button id="discordOAuthButton" class="oauth-button" type="button" data-oauth-provider="discord" hidden>
+                <span class="provider-mark discord-mark" aria-hidden="true">D</span>
+                <span class="oauth-label">Continue with Discord</span>
+                <span class="oauth-arrow" aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <p id="oauthSetupNote" class="oauth-setup-note" role="note" hidden>Google ya Discord sign-in ko pehle Supabase mein configure karna hoga. Abhi email link se continue kar sakte ho.</p>
+            <div class="auth-divider"><span>Or use email</span></div>
+
+            <form id="emailForm" class="auth-form" novalidate>
+              <label for="accountEmail">Email address</label>
+              <input id="accountEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Apna email address" required>
+              <button id="sendLinkButton" class="primary-button" type="submit" disabled>Sign-in link bhejo <span aria-hidden="true">→</span></button>
+            </form>
+
+            <div id="linkStep" class="link-step" hidden>
+              <div class="link-icon" aria-hidden="true">✉</div>
+              <p>Inbox mein aaya sign-in link <strong>isi browser</strong> mein kholo. Link ek baar hi kaam karega.</p>
+              <button id="changeEmailButton" class="text-button" type="button">Email dobara dalo</button>
+            </div>
+
+            <p id="authStatus" class="status-message" role="status" aria-live="polite">Private sign-in check ho raha hai…</p>
+            <div class="privacy-note">
+              <span aria-hidden="true">✦</span>
+              <p>Secure sign-in + server session; saved chats are isolated per account with Supabase row-level security. Passwords ya payment details chat mein mat bhejo. Cloud model enable hone par prompt us model provider tak ja sakta hai.</p>
+            </div>
+            <p class="fine-print">Free hosting aur AI providers par quotas/terms ho sakte hain. Unlimited service ka promise nahi hai.</p>
+          </section>
         </div>
       </section>
 

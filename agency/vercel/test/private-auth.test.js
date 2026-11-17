@@ -159,6 +159,114 @@ test('magic-link signup uses a per-request PKCE challenge and an HttpOnly same-b
   }));
 });
 
+test('OAuth provider discovery exposes only enabled Google/Discord choices', async () => {
+  await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
+    assert.equal(String(url), 'https://ari-test.supabase.co/auth/v1/settings');
+    assert.equal(options.method, 'GET');
+    assert.equal(options.headers.apikey, 'test-public-key');
+    return response(200, {
+      external: { google: true, discord: false, github: true },
+      provider_client_secrets: { google: 'never return this' }
+    });
+  }, async () => {
+    const res = responseStub();
+    await handler(reqStub({ method: 'GET', query: { action: 'providers' } }), res);
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.payload, { providers: ['google'] });
+    assert.equal(JSON.stringify(res.payload).includes('never return this'), false);
+  }));
+});
+
+test('Google OAuth start binds a same-origin redirect to an HttpOnly PKCE verifier cookie', async () => {
+  await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
+    assert.equal(String(url), 'https://ari-test.supabase.co/auth/v1/settings');
+    assert.equal(options.method, 'GET');
+    return response(200, { external: { google: true, discord: true } });
+  }, async () => {
+    const res = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      body: { action: 'start_oauth', provider: 'google', redirect_to: 'https://attacker.example' },
+      headers: { origin: 'https://ari.example' }
+    }), res);
+
+    assert.equal(res.statusCode, 200);
+    const authorizationUrl = new URL(res.payload.authorizationUrl);
+    assert.equal(authorizationUrl.origin, 'https://ari-test.supabase.co');
+    assert.equal(authorizationUrl.pathname, '/auth/v1/authorize');
+    assert.equal(authorizationUrl.searchParams.get('provider'), 'google');
+    assert.equal(authorizationUrl.searchParams.get('redirect_to'), 'https://ari.example');
+    assert.equal(authorizationUrl.searchParams.get('code_challenge_method'), 's256');
+    const challenge = authorizationUrl.searchParams.get('code_challenge');
+    assert.match(challenge, /^[A-Za-z0-9_-]{43}$/);
+    assert.equal(res.payload.authorizationUrl.includes('test-public-key'), false);
+    const cookie = res.headers['Set-Cookie'];
+    assert.match(cookie, /^ari_pkce_verifier=/);
+    assert.match(cookie, /HttpOnly/);
+    assert.match(cookie, /Secure/);
+    assert.match(cookie, /SameSite=Lax/);
+    assert.match(cookie, /Path=\/api\/auth/);
+    const verifier = decodeURIComponent(cookie.match(/^ari_pkce_verifier=([^;]+)/)[1]);
+    assert.equal(crypto.createHash('sha256').update(verifier).digest('base64url'), challenge);
+  }));
+});
+
+test('Discord OAuth start uses the same PKCE callback while keeping its provider fixed', async () => {
+  await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
+    assert.equal(String(url), 'https://ari-test.supabase.co/auth/v1/settings');
+    assert.equal(options.method, 'GET');
+    return response(200, { external: { google: false, discord: true } });
+  }, async () => {
+    const res = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      body: { action: 'start_oauth', provider: 'discord' },
+      headers: { origin: 'https://ari.example' }
+    }), res);
+    assert.equal(res.statusCode, 200);
+    const authorizationUrl = new URL(res.payload.authorizationUrl);
+    assert.equal(authorizationUrl.searchParams.get('provider'), 'discord');
+    assert.equal(authorizationUrl.searchParams.get('redirect_to'), 'https://ari.example');
+    assert.equal(authorizationUrl.searchParams.get('code_challenge_method'), 's256');
+    assert.match(res.headers['Set-Cookie'], /^ari_pkce_verifier=/);
+  }));
+});
+
+test('OAuth start fails closed for disabled providers and unsupported names', async () => {
+  let settingsCalls = 0;
+  await withEnv(baseEnv(), async () => withFetch(async () => {
+    settingsCalls += 1;
+    return response(200, { external: { google: true, discord: false } });
+  }, async () => {
+    const disabled = responseStub();
+    await handler(reqStub({ method: 'POST', body: { action: 'start_oauth', provider: 'discord' } }), disabled);
+    assert.equal(disabled.statusCode, 409);
+    assert.equal(disabled.payload.error, 'oauth_provider_not_enabled');
+    assert.equal(disabled.headers['Set-Cookie'], undefined);
+
+    const unsupported = responseStub();
+    await handler(reqStub({ method: 'POST', body: { action: 'start_oauth', provider: 'github' } }), unsupported);
+    assert.equal(unsupported.statusCode, 400);
+    assert.equal(unsupported.payload.error, 'unsupported_oauth_provider');
+    assert.equal(settingsCalls, 1);
+  }));
+});
+
+test('cross-origin OAuth starts are rejected before checking Supabase providers', async () => {
+  await withEnv(baseEnv(), async () => withFetch(async () => {
+    assert.fail('Cross-origin social sign-in must be rejected before Supabase');
+  }, async () => {
+    const res = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      body: { action: 'start_oauth', provider: 'google' },
+      headers: { origin: 'https://attacker.example' }
+    }), res);
+    assert.equal(res.statusCode, 403);
+    assert.equal(res.payload.error, 'same_origin_required');
+  }));
+});
+
 test('valid unknown emails are sent to Supabase with create_user and receive a non-enumerating response', async () => {
   let otpRequests = 0;
   await withEnv(baseEnv(), async () => withFetch(async (url, options) => {

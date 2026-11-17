@@ -294,6 +294,36 @@ async function sendMagicLink(config, email, redirectTo, challenge) {
   });
 }
 
+const SUPPORTED_OAUTH_PROVIDERS = Object.freeze(['google', 'discord']);
+
+async function getOAuthProviders(config) {
+  const result = await requestSupabase(config, '/auth/v1/settings', { method: 'GET' });
+  if (!result.ok || !result.data || !result.data.external || typeof result.data.external !== 'object') {
+    return { status: result.status || 502, providers: [] };
+  }
+  const providers = SUPPORTED_OAUTH_PROVIDERS.filter(provider => result.data.external[provider] === true);
+  return { status: result.status, providers };
+}
+
+function createOAuthAuthorizeUrl(config, provider, redirectTo, challenge) {
+  if (!SUPPORTED_OAUTH_PROVIDERS.includes(provider) || typeof challenge !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(challenge)) {
+    return null;
+  }
+  let redirect;
+  try { redirect = new URL(redirectTo); }
+  catch (_) { return null; }
+  if (!['https:', 'http:'].includes(redirect.protocol) || redirect.username || redirect.password || redirect.pathname !== '/' || redirect.search || redirect.hash) {
+    return null;
+  }
+
+  const authorizeUrl = new URL('/auth/v1/authorize', config.url);
+  authorizeUrl.searchParams.set('provider', provider);
+  authorizeUrl.searchParams.set('redirect_to', redirect.origin);
+  authorizeUrl.searchParams.set('code_challenge', challenge);
+  authorizeUrl.searchParams.set('code_challenge_method', 's256');
+  return authorizeUrl.toString();
+}
+
 async function revokeSession(config, accessToken) {
   if (!accessToken) return;
   await requestSupabase(config, '/auth/v1/logout', {
@@ -318,6 +348,8 @@ module.exports = {
   fetchUser,
   requireUser,
   sendMagicLink,
+  getOAuthProviders,
+  createOAuthAuthorizeUrl,
   createPkcePair,
   revokeSession,
   setSessionCookies,
