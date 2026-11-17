@@ -13,7 +13,7 @@ const vercelConfig = JSON.parse(fs.readFileSync(path.join(pageRoot, 'vercel.json
 test('Ari hosting dashboard reports account-based setup and remaining live checks honestly', () => {
   assert.match(html, /Ari Launchpad — Private Hosting Status/);
   assert.match(html, /Account-based hosting/);
-  assert.match(html, /51 \/ 51 passed/);
+  assert.match(html, /52 \/ 52 passed/);
   assert.match(html, /Not live-tested/);
   assert.match(html, /RLS enabled/);
   assert.match(html, /live PKCE login and cross-account isolation/);
