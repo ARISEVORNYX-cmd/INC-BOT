@@ -23,6 +23,8 @@
   const deleteChatButton = $('deleteChatButton');
   const modelStatus = $('modelStatus');
   const studioOutput = $('studioOut');
+  const whatsappConnectionStatus = $('whatsappConnectionStatus');
+  const checkWhatsAppConnectionButton = $('checkWhatsAppConnectionButton');
 
   let signedInUser = null;
   let conversations = [];
@@ -104,6 +106,7 @@
     memoryStatus.textContent = 'Saved chats load ho rahe hain…';
     chatNotice.textContent = '';
     loadConversations(true);
+    loadWhatsAppStatus();
     questionInput.focus({ preventScroll: true });
   }
 
@@ -113,6 +116,55 @@
       return true;
     }
     return false;
+  }
+
+  async function loadWhatsAppStatus() {
+    try {
+      const data = await requestJson('/api/whatsapp');
+      const configured = data.configured === true;
+      whatsappConnectionStatus.textContent = configured
+        ? 'Twilio credentials server par configured hain. Restricted read scope verify nahi hua; connection check pending hai, messages draft-only rahenge.'
+        : 'Twilio Sandbox abhi server par configure nahi hai. WhatsApp drafts available hain; Ari kuch send nahi kar sakta.';
+      checkWhatsAppConnectionButton.disabled = !configured;
+    } catch (error) {
+      if (showAuthError(error)) return;
+      whatsappConnectionStatus.textContent = 'WhatsApp connection status abhi unavailable hai. Drafts hi rahenge; koi message send nahi hua.';
+      checkWhatsAppConnectionButton.disabled = true;
+    }
+  }
+
+  async function checkWhatsAppConnection() {
+    checkWhatsAppConnectionButton.disabled = true;
+    whatsappConnectionStatus.textContent = 'Twilio Sandbox ka read-only check chal raha hai; koi WhatsApp nahi bheja ja raha…';
+    let canRetry = true;
+    try {
+      const data = await requestJson('/api/whatsapp', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'check' })
+      });
+      whatsappConnectionStatus.textContent = data.connected === true
+        ? 'Twilio Sandbox connection verified. Sirf read-only check hua; koi WhatsApp message send nahi hua.'
+        : 'Twilio connection verify nahi hua. Koi WhatsApp message send nahi hua.';
+    } catch (error) {
+      if (showAuthError(error)) {
+        canRetry = false;
+        return;
+      }
+      canRetry = !['twilio_not_configured', 'twilio_configuration_incomplete', 'twilio_configuration_invalid'].includes(error.code);
+      const messages = {
+        twilio_not_configured: 'Twilio credentials server par nahi hain. Drafts hi available hain; koi message send nahi hua.',
+        twilio_configuration_incomplete: 'Twilio Preview credentials incomplete hain. Koi message send nahi hua.',
+        twilio_configuration_invalid: 'Twilio Preview configuration invalid hai. Koi message send nahi hua.',
+        twilio_credentials_invalid: 'Twilio ne credentials reject kiye. Restricted API key check karo; koi message send nahi hua.',
+        twilio_read_permission_missing: 'Restricted API key ko Messages read permission chahiye. Koi message send nahi hua.',
+        twilio_rate_limited: 'Twilio read-only check rate-limited hua. Thodi der baad try karo; koi message send nahi hua.',
+        twilio_timeout: 'Twilio read-only check timeout hua. Koi message send nahi hua.',
+        twilio_unavailable: 'Twilio temporarily unavailable hai. Koi message send nahi hua.'
+      };
+      whatsappConnectionStatus.textContent = messages[error.code] || 'Twilio connection check fail hua. Koi message send nahi hua.';
+    } finally {
+      checkWhatsAppConnectionButton.disabled = !canRetry;
+    }
   }
 
   function appendMessage(role, content, saveToState = true) {
@@ -411,6 +463,8 @@
       $('planButton').disabled = false;
     }
   });
+
+  checkWhatsAppConnectionButton.addEventListener('click', checkWhatsAppConnection);
 
   document.querySelectorAll('[data-prompt]').forEach(button => {
     button.addEventListener('click', () => {
