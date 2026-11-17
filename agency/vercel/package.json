@@ -10,7 +10,6 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@openrouter/sdk": "1.5.103",
-    "twilio": "5.13.1"
+    "@openrouter/sdk": "1.5.103"
   }
 }

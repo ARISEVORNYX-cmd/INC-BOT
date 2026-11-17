@@ -24,16 +24,6 @@ The code only displays a social provider when Supabase Auth reports it enabled. 
 
 Until a provider is enabled and its redirects are configured, its button is omitted and email-link sign-in remains available. Google/Discord sign-in does **not** enable Gmail/Drive/Calendar/Discord connectors; those need separate, narrowly scoped consent, token storage, and revocation work.
 
-## WhatsApp Sandbox: Twilio, read-only and Preview-only
-
-The user asked for an approved BSP and a free testing option. Ari now targets Twilio's official WhatsApp Sandbox through Twilio's official [Node.js SDK](https://github.com/twilio/twilio-node) (MIT). This is not direct Meta Cloud API code and does not use WhatsApp Web automation. Twilio's free-trial account includes up to 100 WhatsApp messages in trial units; Sandbox messages are billed at the standard WhatsApp rates and the trial units are limited. Sandbox recipients must join the Sandbox; it is for testing, not production traffic. See [Twilio Sandbox](https://www.twilio.com/docs/whatsapp/sandbox) and [WhatsApp pricing](https://www.twilio.com/whatsapp/pricing).
-
-- `GET /api/whatsapp` reports only whether server-side configuration is present. It never returns a credential.
-- Authenticated same-origin `POST /api/whatsapp` with `{ "action": "check" }` uses a Twilio **Restricted API Key** to read at most one message from the Sandbox sender, then discards the provider response. It returns only a connection result; no message body, recipient, or provider response is saved or displayed.
-- Create a separate Twilio Restricted API Key with only the Messaging Messages **read** permission (`/twilio/messaging/messages/read`). Do not substitute an Auth Token, Main key, or Standard key. If Twilio does not offer the restricted read permission on the account, leave the connection unconfigured rather than use a broader credential. See [Twilio Restricted API Keys](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys) and the [Key resource](https://www.twilio.com/docs/iam/api-keys/key-resource-v1).
-- Set `TWILIO_ACCOUNT_SID`, `TWILIO_API_KEY_SID`, `TWILIO_API_KEY_SECRET`, and optionally `TWILIO_WHATSAPP_FROM` as **Preview-only Vercel environment variables**. Never put real values in Git, browser code, or chat. The default sender is Twilio's Sandbox `whatsapp:+14155238886`.
-- The Ari endpoint deliberately has no message-send action. It rejects other actions, and `api/sales.js` remains opt-in-gated draft generation (`awaiting_human_review`, `sent: false`). Sending requires a separate future implementation and explicit approval. No Twilio account was created, credentials added, live API call made, or message sent as part of this code change.
-
 ## Public-access gate that remains
 
 The Vercel project still reports SSO protection as `all_except_custom_domains`; the current `.vercel.app` domain is therefore not confirmed open to the public. Supabase email signup is enabled, but opening accounts to everyone also requires the Vercel deployment to be publicly reachable. The available Vercel connector does not expose the SSO-protection setting, and no access setting has been changed. Do not claim that public signups are live until this deployment gate is changed and checked.
@@ -46,7 +36,7 @@ Append `/demo` to a Vercel Preview URL to inspect the scripted UI sandbox. Its f
 
 ## Manual verification still required
 
-The automated tests use mocked Auth/provider/database responses; they do not send email, complete a real Google/Discord consent flow, contact Twilio, or prove live Supabase isolation. The Twilio check remains unverified until Preview-only credentials with the restricted read permission are configured. Before opening public access, test on the deployed domain with two separate disposable accounts: verify a fresh PKCE email link and each enabled social provider work in the requesting browser, a signed-out API is rejected, User B cannot read/delete User A's chat by guessing an ID, logout clears cookies, and email rate limits behave as expected. Do not use real private chat content for this check.
+The automated tests use mocked Auth/provider/database responses; they do not send email, complete a real Google/Discord consent flow, or prove live Supabase isolation. Before opening public access, test on the deployed domain with two separate disposable accounts: verify a fresh PKCE email link and each enabled social provider work in the requesting browser, a signed-out API is rejected, User B cannot read/delete User A's chat by guessing an ID, logout clears cookies, and email rate limits behave as expected. Do not use real private chat content for this check.
 
 ## Model behavior and files
 
@@ -56,7 +46,6 @@ The automated tests use mocked Auth/provider/database responses; they do not sen
 - `api/ask.js` — Hinglish local answer, bounded history, optional free-model request, and offline fallback.
 - `api/studio.js` — deterministic planning preview; sensitive actions remain approval-gated.
 - `api/sales.js` — consent-first draft preview only; no scraping, messages, calls, or CRM writes.
-- `api/whatsapp.js`, `_lib/twilio-whatsapp.js` — authenticated Twilio Sandbox status and GET-only read check; no send endpoint.
 - `api/demo-page.js`, `demo.js`, `demo.css` — Preview-only fictional UI sandbox.
 - `service-worker.js`, `vercel.json` — static shell caching rules, routes, and security headers.
 
