@@ -1,12 +1,17 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const { test } = require('node:test');
 const auth = require('../_lib/private-auth');
 const handler = require('../api/auth');
 
-const ENV_KEYS = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_PUBLISHABLE_KEY', 'ARI_ALLOWED_EMAIL', 'ARI_ALLOWED_ORIGIN', 'NODE_ENV'];
-const OWNER_ID = '6dbe2e9e-b674-40ac-a192-8c7de8542091';
+const ENV_KEYS = [
+  'SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_PUBLISHABLE_KEY',
+  'ARI_ALLOWED_EMAIL', 'ARI_ALLOWED_ORIGIN', 'NODE_ENV'
+];
+const USER_A_ID = '6dbe2e9e-b674-40ac-a192-8c7de8542091';
+const USER_B_ID = 'cdb6f671-89b2-49be-a419-44b7672078e0';
 
 async function withEnv(values, callback) {
   const saved = Object.fromEntries(ENV_KEYS.map(key => [key, process.env[key]]));
@@ -29,10 +34,8 @@ async function withFetch(mock, callback) {
 }
 
 function response(status, payload) {
-  return new Response(payload === null ? '' : JSON.stringify(payload), {
-    status,
-    headers: { 'content-type': 'application/json' }
-  });
+  const body = status === 204 || status === 304 ? null : payload === null ? '' : JSON.stringify(payload);
+  return new Response(body, { status, headers: { 'content-type': 'application/json' } });
 }
 
 function responseStub() {
@@ -46,115 +49,152 @@ function responseStub() {
 }
 
 function reqStub({ method = 'GET', query = {}, body = {}, cookie = '', headers = {} } = {}) {
-  return { method, query, body, headers: { cookie, host: 'ari.example', origin: 'https://ari.example', 'x-forwarded-proto': 'https', ...headers } };
+  return {
+    method, query, body,
+    headers: { cookie, host: 'ari.example', origin: 'https://ari.example', 'x-forwarded-proto': 'https', ...headers }
+  };
 }
 
 function baseEnv() {
   return {
     SUPABASE_URL: 'https://ari-test.supabase.co',
     SUPABASE_ANON_KEY: 'test-public-key',
-    ARI_ALLOWED_EMAIL: 'Owner@Example.com',
+    // Legacy allowlist is deliberately set to a different address; it must not block free accounts.
+    ARI_ALLOWED_EMAIL: 'owner@example.com',
     ARI_ALLOWED_ORIGIN: 'https://ari.example',
     NODE_ENV: 'production'
   };
 }
 
-test('protected API auth fails closed when Supabase or owner configuration is missing', async () => {
+const userA = { id: USER_A_ID, email: 'a@example.net', email_confirmed_at: '2026-11-15T00:00:00Z' };
+const userB = { id: USER_B_ID, email: 'b@example.net', email_confirmed_at: '2026-11-15T00:00:00Z' };
+
+test('protected auth fails closed when Supabase public configuration is missing', async () => {
   await withEnv({}, async () => {
     const res = responseStub();
-    const owner = await auth.requireOwner(reqStub({ cookie: 'ari_access=anything' }), res);
-    assert.equal(owner, null);
+    const user = await auth.requireUser(reqStub({ cookie: 'ari_access=anything' }), res);
+    assert.equal(user, null);
     assert.equal(res.statusCode, 503);
     assert.equal(res.payload.error, 'private_auth_not_configured');
   });
 });
 
-test('protected API auth rejects missing cookies without contacting Supabase', async () => {
+test('protected APIs reject signed-out requests before contacting Supabase', async () => {
   await withEnv(baseEnv(), async () => withFetch(async () => {
     assert.fail('No auth cookie must not cause an upstream request');
   }, async () => {
     const res = responseStub();
-    const owner = await auth.requireOwner(reqStub(), res);
-    assert.equal(owner, null);
+    const user = await auth.requireUser(reqStub(), res);
+    assert.equal(user, null);
     assert.equal(res.statusCode, 401);
     assert.equal(res.payload.error, 'unauthenticated');
     assert.equal(res.headers['Cache-Control'], 'no-store, max-age=0');
   }));
 });
 
-test('protected API auth validates Supabase identity and exact owner email server-side', async () => {
+test('any verified Supabase user identity is accepted; the old owner-email variable is ignored', async () => {
   await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
     assert.equal(String(url), 'https://ari-test.supabase.co/auth/v1/user');
     assert.equal(options.headers.apikey, 'test-public-key');
     assert.equal(options.headers.Authorization, 'Bearer valid-access-token');
-    return response(200, { id: OWNER_ID, email: 'owner@example.com' });
+    return response(200, userA);
   }, async () => {
     const res = responseStub();
-    const owner = await auth.requireOwner(reqStub({ cookie: 'ari_access=valid-access-token' }), res);
-    assert.deepEqual({ id: owner.id, email: owner.email }, { id: OWNER_ID, email: 'owner@example.com' });
-    assert.equal(owner.accessToken, 'valid-access-token');
+    const user = await auth.requireUser(reqStub({ cookie: 'ari_access=valid-access-token' }), res);
+    assert.deepEqual({ id: user.id, email: user.email }, { id: USER_A_ID, email: 'a@example.net' });
+    assert.equal(user.accessToken, 'valid-access-token');
   }));
 });
 
-test('an authenticated non-owner is rejected and session cookies are cleared', async () => {
+test('invalid authenticated identity fails closed and clears session cookies', async () => {
   await withEnv(baseEnv(), async () => withFetch(async () => response(200, {
-    id: 'cdb6f671-89b2-49be-a419-44b7672078e0', email: 'other@example.com'
+    id: 'not-a-user-id', email: 'someone@example.net'
   }), async () => {
     const res = responseStub();
-    const owner = await auth.requireOwner(reqStub({ cookie: 'ari_access=valid-access-token; ari_refresh=valid-refresh-token' }), res);
-    assert.equal(owner, null);
-    assert.equal(res.statusCode, 403);
-    assert.equal(res.payload.error, 'owner_only');
+    const user = await auth.requireUser(reqStub({ cookie: 'ari_access=bad-identity-token; ari_refresh=refresh-token' }), res);
+    assert.equal(user, null);
+    assert.equal(res.statusCode, 401);
+    assert.equal(res.payload.error, 'unauthenticated');
     assert.equal(res.headers['Set-Cookie'].length, 2);
     assert.ok(res.headers['Set-Cookie'].every(line => /Max-Age=0/.test(line)));
   }));
 });
 
-test('magic sign-in link is sent only for the owner email and redirects to the same origin', async () => {
+test('magic-link signup uses a per-request PKCE challenge and an HttpOnly same-browser verifier cookie', async () => {
+  let challengeSent;
   await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
     assert.equal(String(url), 'https://ari-test.supabase.co/auth/v1/otp?redirect_to=https%3A%2F%2Fari.example');
+    assert.equal(options.method, 'POST');
     assert.equal(options.headers.apikey, 'test-public-key');
     const body = JSON.parse(options.body);
-    assert.deepEqual(body, { email: 'owner@example.com', create_user: true, code_challenge: null, code_challenge_method: null });
+    assert.equal(body.email, 'new.user@example.net');
+    assert.equal(body.create_user, true);
+    assert.equal(body.code_challenge_method, 's256');
+    assert.match(body.code_challenge, /^[A-Za-z0-9_-]{43}$/);
+    challengeSent = body.code_challenge;
+    assert.equal(options.headers.Authorization, undefined);
     return response(200, {});
   }, async () => {
     const res = responseStub();
     await handler(reqStub({
       method: 'POST',
-      body: { action: 'send_link', email: ' Owner@Example.com ' },
+      body: { action: 'send_link', email: ' New.User@Example.net ' },
       headers: { origin: 'https://ari.example' }
     }), res);
+
     assert.equal(res.statusCode, 200);
     assert.equal(res.payload.sent, true);
-    assert.match(res.payload.message, /sign-in link/);
+    assert.match(res.payload.message, /same browser/i);
     assert.equal(JSON.stringify(res.payload).includes('test-public-key'), false);
-    assert.equal(res.headers['Set-Cookie'], undefined);
+    const cookie = res.headers['Set-Cookie'];
+    assert.match(cookie, /^ari_pkce_verifier=/);
+    assert.match(cookie, /HttpOnly/);
+    assert.match(cookie, /Secure/);
+    assert.match(cookie, /SameSite=Lax/);
+    assert.match(cookie, /Path=\/api\/auth/);
+    const verifier = decodeURIComponent(cookie.match(/^ari_pkce_verifier=([^;]+)/)[1]);
+    assert.match(verifier, /^[A-Za-z0-9_-]{43}$/);
+    const expectedChallenge = crypto.createHash('sha256').update(verifier).digest('base64url');
+    assert.equal(expectedChallenge, challengeSent);
   }));
 });
 
-test('unknown emails receive a generic success response without sending a link', async () => {
-  await withEnv(baseEnv(), async () => withFetch(async () => {
-    assert.fail('A non-owner email must not be sent a sign-in link');
-  }, async () => {
-    const res = responseStub();
-    await handler(reqStub({ method: 'POST', body: { action: 'send_link', email: 'attacker@example.com' } }), res);
-    assert.equal(res.statusCode, 200);
-    assert.match(res.payload.message, /If this is the owner email/);
-  }));
-});
-
-test('state-changing auth endpoint rejects cross-origin browser requests', async () => {
-  await withEnv(baseEnv(), async () => withFetch(async () => {
-    assert.fail('A cross-origin request must not reach Supabase');
+test('valid unknown emails are sent to Supabase with create_user and receive a non-enumerating response', async () => {
+  let otpRequests = 0;
+  await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
+    otpRequests += 1;
+    assert.ok(String(url).includes('/auth/v1/otp'));
+    assert.equal(JSON.parse(options.body).create_user, true);
+    return response(200, {});
   }, async () => {
     const res = responseStub();
     await handler(reqStub({
       method: 'POST',
-      body: { action: 'send_link', email: 'owner@example.com' },
-      headers: { origin: 'https://attacker.example' }
+      body: { action: 'send_link', email: 'not-yet-registered@example.net' }
     }), res);
-    assert.equal(res.statusCode, 403);
-    assert.equal(res.payload.error, 'same_origin_required');
+    assert.equal(otpRequests, 1);
+    assert.equal(res.statusCode, 200);
+    assert.match(res.payload.message, /If this email can receive sign-in/i);
+  }));
+});
+
+test('malformed email and cross-origin requests do not call Supabase', async () => {
+  await withEnv(baseEnv(), async () => withFetch(async () => {
+    assert.fail('Invalid or cross-origin requests must be rejected before Supabase');
+  }, async () => {
+    const malformed = responseStub();
+    await handler(reqStub({ method: 'POST', body: { action: 'send_link', email: 'bad' } }), malformed);
+    assert.equal(malformed.statusCode, 400);
+    assert.equal(malformed.payload.error, 'invalid_email');
+
+    const crossOrigin = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      body: { action: 'send_link', email: 'person@example.net' },
+      headers: { origin: 'https://attacker.example' }
+    }), crossOrigin);
+    assert.equal(crossOrigin.statusCode, 403);
+    assert.equal(crossOrigin.payload.error, 'same_origin_required');
   }));
 });
 
@@ -184,22 +224,103 @@ test('production same-origin validation fails closed without an exact allowed or
 });
 
 test('JSON body parser enforces UTF-8 byte caps and rejects malformed lengths and shapes', () => {
-  assert.deepEqual(auth.parseJsonBody({ body: '{\"ok\":true}', headers: { 'content-length': '11' } }, 11), { body: { ok: true } });
-  assert.equal(auth.parseJsonBody({ body: Buffer.from('{\"q\":\"🌐\"}') }, 10).error, 'body_too_large');
+  assert.deepEqual(auth.parseJsonBody({ body: '{"ok":true}', headers: { 'content-length': '11' } }, 11), { body: { ok: true } });
+  assert.equal(auth.parseJsonBody({ body: Buffer.from('{"q":"🌐"}') }, 10).error, 'body_too_large');
   assert.equal(auth.parseJsonBody({ body: { q: '🌐' } }, 11).error, 'body_too_large');
-  assert.equal(auth.parseJsonBody({ body: '{\"ok\":true}', headers: { 'content-length': '12' } }, 11).error, 'body_too_large');
+  assert.equal(auth.parseJsonBody({ body: '{"ok":true}', headers: { 'content-length': '12' } }, 11).error, 'body_too_large');
   assert.equal(auth.parseJsonBody({ body: '{}', headers: { 'content-length': 'many' } }, 11).error, 'invalid_content_length');
   assert.equal(auth.parseJsonBody({ body: '{bad' }, 11).error, 'invalid_json');
   assert.equal(auth.parseJsonBody({ body: [] }, 11).error, 'invalid_json');
 });
 
-test('magic-link callback verifies the owner and sets HttpOnly cookies without returning tokens', async () => {
+test('PKCE callback redeems code server-side, validates the user, and returns only HttpOnly cookies', async () => {
+  const pair = auth.createPkcePair();
   const secretAccess = 'access-token-test-secret-that-is-long-enough';
   const secretRefresh = 'refresh-token-test-secret-that-is-long-enough';
+  const cookies = `ari_pkce_verifier=${pair.verifier}`;
+  let tokenCalls = 0;
+
+  await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
+    const target = String(url);
+    if (target.endsWith('/auth/v1/token?grant_type=pkce')) {
+      tokenCalls += 1;
+      assert.equal(options.method, 'POST');
+      assert.equal(options.headers.apikey, 'test-public-key');
+      assert.deepEqual(JSON.parse(options.body), {
+        auth_code: 'single-use-code-1234567890',
+        code_verifier: pair.verifier
+      });
+      return response(200, {
+        access_token: secretAccess,
+        refresh_token: secretRefresh,
+        expires_in: 1800,
+        user: userA
+      });
+    }
+    if (target.endsWith('/auth/v1/user')) {
+      assert.equal(options.headers.Authorization, `Bearer ${secretAccess}`);
+      return response(200, userA);
+    }
+    throw new Error(`Unexpected request ${target}`);
+  }, async () => {
+    const res = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      cookie: cookies,
+      body: { action: 'exchange_link', code: 'single-use-code-1234567890' },
+      headers: { origin: 'https://ari.example' }
+    }), res);
+
+    assert.equal(tokenCalls, 1);
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.payload, { authenticated: true, user: { id: USER_A_ID, email: 'a@example.net' } });
+    assert.equal(JSON.stringify(res.payload).includes(secretAccess), false);
+    assert.equal(JSON.stringify(res.payload).includes(secretRefresh), false);
+    assert.equal(res.headers['Set-Cookie'].length, 3);
+    assert.ok(res.headers['Set-Cookie'].slice(0, 2).every(line => /HttpOnly/.test(line) && /Secure/.test(line) && /SameSite=Strict/.test(line) && /Path=\//.test(line)));
+    assert.match(res.headers['Set-Cookie'][2], /ari_pkce_verifier=.*Max-Age=0/);
+  }));
+});
+
+test('PKCE callback fails closed if the same-browser verifier cookie is missing', async () => {
+  await withEnv(baseEnv(), async () => withFetch(async () => {
+    assert.fail('A callback without its bound verifier must not reach Supabase');
+  }, async () => {
+    const res = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      body: { action: 'exchange_link', code: 'single-use-code-1234567890' },
+      headers: { origin: 'https://ari.example' }
+    }), res);
+    assert.equal(res.statusCode, 400);
+    assert.equal(res.payload.error, 'pkce_verifier_missing');
+    assert.match(res.headers['Set-Cookie'], /Max-Age=0/);
+  }));
+});
+
+test('temporary Auth outage leaves the PKCE verifier available for a retry', async () => {
+  const pair = auth.createPkcePair();
+  await withEnv(baseEnv(), async () => withFetch(async () => response(503, { error: 'temporarily_unavailable' }), async () => {
+    const res = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      cookie: `ari_pkce_verifier=${pair.verifier}`,
+      body: { action: 'exchange_link', code: 'single-use-code-1234567890' },
+      headers: { origin: 'https://ari.example' }
+    }), res);
+    assert.equal(res.statusCode, 503);
+    assert.equal(res.payload.error, 'auth_service_unavailable');
+    assert.equal(res.headers['Set-Cookie'], undefined);
+  }));
+});
+
+test('legacy one-time link tokens still exchange during rollout without being returned to the browser', async () => {
+  const secretAccess = 'legacy-access-token-test-secret-that-is-long-enough';
+  const secretRefresh = 'legacy-refresh-token-test-secret-that-is-long-enough';
   await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
     assert.equal(String(url), 'https://ari-test.supabase.co/auth/v1/user');
     assert.equal(options.headers.Authorization, `Bearer ${secretAccess}`);
-    return response(200, { id: OWNER_ID, email: 'owner@example.com' });
+    return response(200, userB);
   }, async () => {
     const res = responseStub();
     await handler(reqStub({
@@ -208,34 +329,59 @@ test('magic-link callback verifies the owner and sets HttpOnly cookies without r
       headers: { origin: 'https://ari.example' }
     }), res);
     assert.equal(res.statusCode, 200);
-    assert.deepEqual(res.payload, { authenticated: true, user: { id: OWNER_ID, email: 'owner@example.com' } });
+    assert.deepEqual(res.payload, { authenticated: true, user: { id: USER_B_ID, email: 'b@example.net' } });
     assert.equal(JSON.stringify(res.payload).includes(secretAccess), false);
     assert.equal(JSON.stringify(res.payload).includes(secretRefresh), false);
-    assert.equal(res.headers['Set-Cookie'].length, 2);
-    assert.ok(res.headers['Set-Cookie'].every(line => /HttpOnly/.test(line) && /Secure/.test(line) && /SameSite=Strict/.test(line) && /Path=\//.test(line)));
+    assert.equal(res.headers['Set-Cookie'].length, 3);
   }));
 });
 
-test('expired access cookie is refreshed and rotated without revealing tokens', async () => {
+test('expired access cookie refreshes and rotates for its authenticated account', async () => {
   const newAccess = 'rotated-access-token';
   const newRefresh = 'rotated-refresh-token';
   await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
     const target = String(url);
-    if (target.endsWith('/auth/v1/user')) return response(401, { message: 'expired' });
+    if (target.endsWith('/auth/v1/user')) {
+      if (options.headers.Authorization === 'Bearer expired-token') return response(401, { message: 'expired' });
+      assert.equal(options.headers.Authorization, `Bearer ${newAccess}`);
+      return response(200, userB);
+    }
     assert.equal(target, 'https://ari-test.supabase.co/auth/v1/token?grant_type=refresh_token');
     assert.deepEqual(JSON.parse(options.body), { refresh_token: 'old-refresh-token' });
     return response(200, {
       access_token: newAccess,
       refresh_token: newRefresh,
       expires_in: 3600,
-      user: { id: OWNER_ID, email: 'owner@example.com' }
+      user: userB
     });
   }, async () => {
     const res = responseStub();
-    const owner = await auth.requireOwner(reqStub({ cookie: 'ari_access=expired-token; ari_refresh=old-refresh-token' }), res);
-    assert.equal(owner.accessToken, newAccess);
-    assert.equal(owner.email, 'owner@example.com');
+    const user = await auth.requireUser(reqStub({ cookie: 'ari_access=expired-token; ari_refresh=old-refresh-token' }), res);
+    assert.equal(user.id, USER_B_ID);
+    assert.equal(user.accessToken, newAccess);
+    assert.equal(user.email, 'b@example.net');
     assert.ok(res.headers['Set-Cookie'].some(line => line.includes(encodeURIComponent(newAccess))));
     assert.ok(res.headers['Set-Cookie'].some(line => line.includes(encodeURIComponent(newRefresh))));
+  }));
+});
+
+test('logout revokes the current session and clears all auth cookies', async () => {
+  await withEnv(baseEnv(), async () => withFetch(async (url, options) => {
+    assert.equal(String(url), 'https://ari-test.supabase.co/auth/v1/logout');
+    assert.equal(options.method, 'POST');
+    assert.equal(options.headers.Authorization, 'Bearer current-access-token');
+    return response(204, null);
+  }, async () => {
+    const res = responseStub();
+    await handler(reqStub({
+      method: 'POST',
+      cookie: 'ari_access=current-access-token; ari_refresh=current-refresh-token; ari_pkce_verifier=old-verifier',
+      body: { action: 'logout' },
+      headers: { origin: 'https://ari.example' }
+    }), res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.payload.authenticated, false);
+    assert.equal(res.headers['Set-Cookie'].length, 3);
+    assert.ok(res.headers['Set-Cookie'].every(line => /Max-Age=0/.test(line)));
   }));
 });

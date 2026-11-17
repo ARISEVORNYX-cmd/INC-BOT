@@ -18,15 +18,17 @@ test('private Ari shell hides the workspace until session verification and disco
   assert.doesNotMatch(html, /<style\b|<script\b(?![^>]*\bsrc=)[^>]*>/i);
 });
 
-test('browser code keeps user text as text and does not persist Supabase tokens locally', () => {
+test('browser code keeps user text as text, handles PKCE callbacks, and does not persist tokens locally', () => {
   assert.match(client, /bubble\.textContent\s*=/);
   assert.doesNotMatch(client, /\.innerHTML\s*=|localStorage|sessionStorage|SUPABASE_(?:ANON|PUBLISHABLE)_KEY|service_role/i);
   assert.match(client, /credentials:\s*'same-origin'/);
+  assert.match(client, /query\.get\('code'\)/);
+  assert.match(client, /payload\.code\s*=\s*code/);
   assert.match(client, /history\.replaceState/);
 });
 
 test('service worker caches only the private app shell, skipping APIs and demo navigation', () => {
-  assert.match(worker, /ari-private-shell-v3/);
+  assert.match(worker, /ari-private-shell-v4/);
   assert.match(worker, /url\.pathname\.startsWith\('\/api\/'\)/);
   assert.match(worker, /url\.pathname !== '\/' && url\.pathname !== '\/index\.html'/);
   assert.match(worker, /never cached/i);

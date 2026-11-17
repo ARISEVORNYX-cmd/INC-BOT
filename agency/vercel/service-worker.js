@@ -1,5 +1,5 @@
 /* Cache only the public application shell. Authentication APIs and personal chats are never cached. */
-const CACHE_NAME = 'ari-private-shell-v3';
+const CACHE_NAME = 'ari-private-shell-v4';
 const SHELL = [
   '/',
   '/styles.css',

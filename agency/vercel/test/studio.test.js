@@ -10,13 +10,12 @@ async function invoke({ method = 'POST', body = {}, authenticated = true } = {})
     json(payload) { this.payload = payload; return this; },
     end() { this.ended = true; return this; }
   };
-  const authKeys = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'ARI_ALLOWED_EMAIL', 'ARI_ALLOWED_ORIGIN'];
+  const authKeys = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'ARI_ALLOWED_ORIGIN'];
   const savedEnv = Object.fromEntries(authKeys.map(key => [key, process.env[key]]));
   const savedFetch = global.fetch;
   Object.assign(process.env, {
     SUPABASE_URL: 'https://ari-test.supabase.co',
     SUPABASE_ANON_KEY: 'test-public-key',
-    ARI_ALLOWED_EMAIL: 'owner@example.com',
     ARI_ALLOWED_ORIGIN: 'https://ari.example'
   });
   global.fetch = async (url, options) => {

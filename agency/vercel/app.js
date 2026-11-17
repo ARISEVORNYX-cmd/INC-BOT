@@ -7,7 +7,7 @@
   const authStatus = $('authStatus');
   const emailForm = $('emailForm');
   const linkStep = $('linkStep');
-  const emailInput = $('ownerEmail');
+  const emailInput = $('accountEmail');
   const sendLinkButton = $('sendLinkButton');
   const conversationList = $('conversationList');
   const messagesBox = $('messages');
@@ -65,7 +65,7 @@
     renderTranscript();
     renderConversations();
     sendLinkButton.disabled = disableSignIn;
-    authStatus.textContent = message || 'Owner-only sign-in ready. Apna owner email dalo.';
+    authStatus.textContent = message || 'Free account sign-in ready. Apna email dalo.';
   }
 
   function showApp(user) {
@@ -81,8 +81,8 @@
   }
 
   function showAuthError(error) {
-    if (error && (error.code === 'unauthenticated' || error.code === 'owner_only')) {
-      showLogin(error.code === 'owner_only' ? 'Yeh workspace sirf owner email ke liye hai.' : 'Session khatam ho gaya. Dobara sign in karo.');
+    if (error && error.code === 'unauthenticated') {
+      showLogin('Session khatam ho gaya. Dobara sign in karo.');
       return true;
     }
     return false;
@@ -218,7 +218,7 @@
       await requestJson('/api/auth', { method: 'POST', body: JSON.stringify({ action: 'send_link', email }) });
       emailForm.hidden = true;
       linkStep.hidden = false;
-      authStatus.textContent = 'Agar email owner account ka hai, inbox mein one-time sign-in link aayega. Spam folder bhi dekh lo.';
+      authStatus.textContent = 'Agar email sign-in ke liye available hai, inbox mein one-time link aayega. Spam folder bhi dekh lo; link isi browser mein kholo.';
     } catch (error) {
       authStatus.textContent = error.message || 'Sign-in request complete nahi hui.';
       sendLinkButton.disabled = false;
@@ -229,7 +229,7 @@
     linkStep.hidden = true;
     emailForm.hidden = false;
     sendLinkButton.disabled = false;
-    authStatus.textContent = 'Owner email dalo; sign-in link allowlisted address par hi bheja jayega.';
+    authStatus.textContent = 'Apna email dalo; Ari free account ke liye sign-in link bhejega.';
     emailInput.focus();
   });
 
@@ -238,7 +238,7 @@
     try { await requestJson('/api/auth', { method: 'POST', body: JSON.stringify({ action: 'logout' }) }); }
     catch (_) { /* The browser still drops the private view; cookie expiry is server-controlled. */ }
     $('logoutButton').disabled = false;
-    showLogin('Sign out ho gaya. Dobara aane ke liye owner email link use karo.');
+    showLogin('Sign out ho gaya. Dobara sign in karne ke liye email link mangwao.');
   });
 
   $('newChatButton').addEventListener('click', () => startNewChat());
@@ -393,26 +393,31 @@
     const query = new URLSearchParams(window.location.search);
     const fragment = new URLSearchParams(window.location.hash.replace(/^#/, ''));
     const params = fragment.has('access_token') || fragment.has('error') ? fragment : query;
+    const code = query.get('code') || fragment.get('code') || '';
     const accessToken = params.get('access_token') || '';
     const refreshToken = params.get('refresh_token') || '';
     const errorDescription = params.get('error_description') || params.get('error') || '';
-    if (!accessToken && !refreshToken && !errorDescription) return false;
+    if (!code && !accessToken && !refreshToken && !errorDescription) return false;
 
+    // Remove one-time auth material from the address bar before making any API request.
     window.history.replaceState({}, document.title, window.location.pathname);
     if (errorDescription) {
       showLogin('Email sign-in link expire ya invalid ho gaya. Naya link mangwa lo.');
       return true;
     }
-    if (!accessToken || !refreshToken) {
+    if (!code && (!accessToken || !refreshToken)) {
       showLogin('Sign-in link incomplete tha. Naya link mangwa kar isi browser mein kholo.');
       return true;
     }
 
     authStatus.textContent = 'Email link verify ho raha hai…';
     try {
+      const payload = { action: 'exchange_link' };
+      if (code) payload.code = code;
+      else Object.assign(payload, { access_token: accessToken, refresh_token: refreshToken });
       const data = await requestJson('/api/auth', {
         method: 'POST',
-        body: JSON.stringify({ action: 'exchange_link', access_token: accessToken, refresh_token: refreshToken })
+        body: JSON.stringify(payload)
       });
       showApp(data.user);
     } catch (error) {
@@ -433,12 +438,10 @@
     } catch (error) {
       if (error.code === 'private_auth_not_configured') {
         showLogin('Private sign-in abhi server par configure nahi hai. Fail-closed: workspace open nahi hoga.', true);
-      } else if (error.code === 'owner_only') {
-        showLogin('Yeh workspace sirf owner email ke liye hai. Apna allowlisted email use karo.');
       } else if (error.code === 'auth_service_unavailable') {
         showLogin('Sign-in service temporarily unavailable hai. Thodi der baad try karo.');
       } else {
-        showLogin('Owner-only sign-in ready. Apna owner email dalo.');
+        showLogin('Free account sign-in ready. Apna email dalo.');
       }
     }
   }

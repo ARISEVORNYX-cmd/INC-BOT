@@ -176,8 +176,8 @@ module.exports = async (req, res) => {
   if (method === 'POST' && !privateAuth.requestIsSameOrigin(req)) {
     return privateAuth.json(res, 403, { error: 'same_origin_required' });
   }
-  const owner = await privateAuth.requireOwner(req, res);
-  if (!owner) return;
+  const user = await privateAuth.requireUser(req, res);
+  if (!user) return;
 
   const parsed = method === 'POST'
     ? privateAuth.parseJsonBody(req, 24000)

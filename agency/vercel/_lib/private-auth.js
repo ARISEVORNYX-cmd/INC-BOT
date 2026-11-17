@@ -1,9 +1,13 @@
 'use strict';
 
+const crypto = require('node:crypto');
+
 const ACCESS_COOKIE = 'ari_access';
 const REFRESH_COOKIE = 'ari_refresh';
+const PKCE_COOKIE = 'ari_pkce_verifier';
 const ACCESS_MAX_AGE_SECONDS = 60 * 60;
 const REFRESH_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+const PKCE_MAX_AGE_SECONDS = 60 * 60;
 const AUTH_TIMEOUT_MS = 5000;
 
 function normalizeEmail(value) {
@@ -13,7 +17,6 @@ function normalizeEmail(value) {
 function getConfig() {
   const rawUrl = String(process.env.SUPABASE_URL || '').trim().replace(/\/+$/, '');
   const anonKey = String(process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || '').trim();
-  const allowedEmail = normalizeEmail(process.env.ARI_ALLOWED_EMAIL);
   let url;
   try {
     url = new URL(rawUrl);
@@ -21,9 +24,9 @@ function getConfig() {
     return null;
   }
   const localHttp = ['localhost', '127.0.0.1'].includes(url.hostname);
-  if ((!localHttp && url.protocol !== 'https:') || !anonKey || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(allowedEmail)) return null;
+  if ((!localHttp && url.protocol !== 'https:') || !anonKey) return null;
   if (url.username || url.password || url.search || url.hash) return null;
-  return { url: rawUrl, anonKey, allowedEmail };
+  return { url: rawUrl, anonKey };
 }
 
 function setNoStore(res) {
@@ -93,10 +96,12 @@ function getRequestOrigin(req) {
   catch (_) { return null; }
 }
 
-function cookieLine(req, name, value, maxAge) {
+function cookieLine(req, name, value, maxAge, options = {}) {
   const forwardedProto = String(req && req.headers && req.headers['x-forwarded-proto'] || '').split(',')[0].trim().toLowerCase();
   const secure = forwardedProto === 'https' || process.env.NODE_ENV === 'production';
-  return `${name}=${encodeURIComponent(value || '')}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${secure ? '; Secure' : ''}`;
+  const path = options.path || '/';
+  const sameSite = options.sameSite || 'Strict';
+  return `${name}=${encodeURIComponent(value || '')}; Path=${path}; HttpOnly; SameSite=${sameSite}; Max-Age=${maxAge}${secure ? '; Secure' : ''}`;
 }
 
 function setSessionCookies(req, res, session) {
@@ -105,7 +110,8 @@ function setSessionCookies(req, res, session) {
   const expiresIn = Math.max(60, Math.min(ACCESS_MAX_AGE_SECONDS, Number(session && session.expires_in) || ACCESS_MAX_AGE_SECONDS));
   res.setHeader('Set-Cookie', [
     cookieLine(req, ACCESS_COOKIE, access, expiresIn),
-    cookieLine(req, REFRESH_COOKIE, refresh, REFRESH_MAX_AGE_SECONDS)
+    cookieLine(req, REFRESH_COOKIE, refresh, REFRESH_MAX_AGE_SECONDS),
+    cookieLine(req, PKCE_COOKIE, '', 0, { path: '/api/auth', sameSite: 'Lax' })
   ]);
 }
 
@@ -114,6 +120,34 @@ function clearSessionCookies(req, res) {
     cookieLine(req, ACCESS_COOKIE, '', 0),
     cookieLine(req, REFRESH_COOKIE, '', 0)
   ]);
+}
+
+function clearAuthCookies(req, res) {
+  res.setHeader('Set-Cookie', [
+    cookieLine(req, ACCESS_COOKIE, '', 0),
+    cookieLine(req, REFRESH_COOKIE, '', 0),
+    cookieLine(req, PKCE_COOKIE, '', 0, { path: '/api/auth', sameSite: 'Lax' })
+  ]);
+}
+
+function setPkceCookie(req, res, verifier) {
+  res.setHeader('Set-Cookie', cookieLine(req, PKCE_COOKIE, verifier, PKCE_MAX_AGE_SECONDS, {
+    path: '/api/auth',
+    sameSite: 'Lax'
+  }));
+}
+
+function clearPkceCookie(req, res) {
+  res.setHeader('Set-Cookie', cookieLine(req, PKCE_COOKIE, '', 0, {
+    path: '/api/auth',
+    sameSite: 'Lax'
+  }));
+}
+
+function createPkcePair() {
+  const verifier = crypto.randomBytes(32).toString('base64url');
+  const challenge = crypto.createHash('sha256').update(verifier).digest('base64url');
+  return { verifier, challenge };
 }
 
 async function requestSupabase(config, path, options = {}) {
@@ -139,10 +173,10 @@ async function requestSupabase(config, path, options = {}) {
   }
 }
 
-function ownerIdentity(user, config) {
-  if (!user || typeof user.id !== 'string' || !user.id || !/^[0-9a-f-]{36}$/i.test(user.id)) return null;
+function userIdentity(user) {
+  if (!user || typeof user.id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(user.id)) return null;
   const email = normalizeEmail(user.email);
-  if (!email || email !== config.allowedEmail) return null;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
   return { id: user.id, email };
 }
 
@@ -164,7 +198,7 @@ async function refreshSession(config, refreshToken) {
   return { status: result.status, session: result.ok ? result.data : null };
 }
 
-async function requireOwner(req, res) {
+async function requireUser(req, res) {
   setNoStore(res);
   const config = getConfig();
   if (!config) {
@@ -207,10 +241,10 @@ async function requireOwner(req, res) {
     return null;
   }
 
-  const user = ownerIdentity(auth.user, config);
+  const user = userIdentity(auth.user);
   if (!user) {
     clearSessionCookies(req, res);
-    json(res, 403, { error: 'owner_only', message: 'This Ari workspace is limited to its owner.' });
+    json(res, 401, { error: 'unauthenticated', message: 'Sign in with a valid account to continue.' });
     return null;
   }
 
@@ -249,11 +283,14 @@ function parseJsonBody(req, maxBytes = 12000) {
   return { body };
 }
 
-async function sendMagicLink(config, email, redirectTo) {
+async function sendMagicLink(config, email, redirectTo, challenge) {
   const redirect = new URL(redirectTo);
+  if (typeof challenge !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(challenge)) {
+    return { status: 400, ok: false, data: null };
+  }
   return requestSupabase(config, `/auth/v1/otp?redirect_to=${encodeURIComponent(redirect.origin)}`, {
     method: 'POST',
-    body: JSON.stringify({ email, create_user: true, code_challenge: null, code_challenge_method: null })
+    body: JSON.stringify({ email, create_user: true, code_challenge: challenge, code_challenge_method: 's256' })
   });
 }
 
@@ -268,18 +305,24 @@ async function revokeSession(config, accessToken) {
 module.exports = {
   ACCESS_COOKIE,
   REFRESH_COOKIE,
+  PKCE_COOKIE,
   getConfig,
   json,
   normalizeEmail,
-  ownerIdentity,
+  userIdentity,
   parseCookies,
   parseJsonBody,
   requestIsSameOrigin,
   getRequestOrigin,
   requestSupabase,
-  requireOwner,
+  fetchUser,
+  requireUser,
   sendMagicLink,
+  createPkcePair,
   revokeSession,
   setSessionCookies,
-  clearSessionCookies
+  clearSessionCookies,
+  clearAuthCookies,
+  setPkceCookie,
+  clearPkceCookie
 };

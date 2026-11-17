@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const sales = require('../api/sales');
 
-const ENV_KEYS = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_PUBLISHABLE_KEY', 'ARI_ALLOWED_EMAIL', 'ARI_ALLOWED_ORIGIN', 'NODE_ENV'];
+const ENV_KEYS = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_PUBLISHABLE_KEY', 'ARI_ALLOWED_ORIGIN', 'NODE_ENV'];
 const OWNER_ID = '6dbe2e9e-b674-40ac-a192-8c7de8542091';
 
 async function withEnv(callback) {
@@ -12,7 +12,6 @@ async function withEnv(callback) {
   Object.assign(process.env, {
     SUPABASE_URL: 'https://ari-test.supabase.co',
     SUPABASE_ANON_KEY: 'test-public-key',
-    ARI_ALLOWED_EMAIL: 'owner@example.com',
     ARI_ALLOWED_ORIGIN: 'https://ari.example',
     NODE_ENV: 'production'
   });
@@ -58,7 +57,7 @@ function ownerFetch(url) {
   throw new Error(`Unexpected request ${String(url)}`);
 }
 
-test('sales role listing is behind the owner session', async () => {
+test('sales role listing is behind an authenticated user session', async () => {
   await withEnv(() => withFetch(async url => ownerFetch(url), async () => {
     const signedOut = await invoke({ method: 'GET', authenticated: false });
     assert.equal(signedOut.statusCode, 401);

@@ -185,8 +185,8 @@ module.exports = async function studio(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'GET' && req.method !== 'POST') return privateAuth.json(res, 405, { error: 'method_not_allowed' });
   if (req.method === 'POST' && !privateAuth.requestIsSameOrigin(req)) return privateAuth.json(res, 403, { error: 'same_origin_required' });
-  const owner = await privateAuth.requireOwner(req, res);
-  if (!owner) return;
+  const user = await privateAuth.requireUser(req, res);
+  if (!user) return;
   if (req.method === 'GET') return res.status(200).json({
     director: 'Ari — Studio Director',
     catalog: CATALOG,

@@ -10,14 +10,14 @@ const html = fs.readFileSync(path.join(pageRoot, 'deploy.html'), 'utf8');
 const css = fs.readFileSync(path.join(pageRoot, 'deploy.css'), 'utf8');
 const vercelConfig = JSON.parse(fs.readFileSync(path.join(pageRoot, 'vercel.json'), 'utf8'));
 
-test('Ari hosting dashboard reports configured privacy setup and the unverified owner login honestly', () => {
+test('Ari hosting dashboard reports account-based setup and remaining live checks honestly', () => {
   assert.match(html, /Ari Launchpad — Private Hosting Status/);
-  assert.match(html, /Owner-only hosting/);
-  assert.match(html, /41 \/ 41 passed/);
-  assert.match(html, /No Auth account exists yet/);
+  assert.match(html, /Account-based hosting/);
+  assert.match(html, /51 \/ 51 passed/);
+  assert.match(html, /Not live-tested/);
   assert.match(html, /RLS enabled/);
-  assert.match(html, /live sign-in or database isolation/);
-  assert.match(html, /No sign-in link has been sent/);
+  assert.match(html, /live PKCE login and cross-account isolation/);
+  assert.match(html, /Vercel currently reports SSO protection/);
   assert.match(html, /not unlimited service/i);
   assert.match(html, /AI_PROVIDER=local/);
   assert.match(html, /OPENROUTER_API_KEY/);

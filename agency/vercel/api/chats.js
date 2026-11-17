@@ -7,11 +7,11 @@ function safePath(path, query) {
   return `${path}?${query.toString()}`;
 }
 
-async function databaseRequest(owner, path, options = {}) {
-  return privateAuth.requestSupabase(owner.config, path, {
+async function databaseRequest(user, path, options = {}) {
+  return privateAuth.requestSupabase(user.config, path, {
     ...options,
     headers: {
-      Authorization: `Bearer ${owner.accessToken}`,
+      Authorization: `Bearer ${user.accessToken}`,
       ...(options.headers || {})
     }
   });
@@ -31,8 +31,8 @@ module.exports = async function chats(req, res) {
     return privateAuth.json(res, 403, { error: 'same_origin_required' });
   }
 
-  const owner = await privateAuth.requireOwner(req, res);
-  if (!owner) return;
+  const user = await privateAuth.requireUser(req, res);
+  if (!user) return;
 
   if (req.method === 'GET') {
     const conversationId = String(req.query && req.query.id || '').trim();
@@ -41,23 +41,23 @@ module.exports = async function chats(req, res) {
     if (conversationId) {
       const query = new URLSearchParams({
         select: 'id,role,content,created_at',
-        owner_id: `eq.${owner.id}`,
+        owner_id: `eq.${user.id}`,
         conversation_id: `eq.${conversationId}`,
         order: 'created_at.asc',
         limit: '500'
       });
-      const result = await databaseRequest(owner, safePath('/rest/v1/ari_messages', query), { method: 'GET' });
+      const result = await databaseRequest(user, safePath('/rest/v1/ari_messages', query), { method: 'GET' });
       if (!result.ok) return storageError(res, result);
       return privateAuth.json(res, 200, { messages: Array.isArray(result.data) ? result.data : [] });
     }
 
     const query = new URLSearchParams({
       select: 'id,title,created_at,updated_at',
-      owner_id: `eq.${owner.id}`,
+      owner_id: `eq.${user.id}`,
       order: 'updated_at.desc',
       limit: '100'
     });
-    const result = await databaseRequest(owner, safePath('/rest/v1/ari_conversations', query), { method: 'GET' });
+    const result = await databaseRequest(user, safePath('/rest/v1/ari_conversations', query), { method: 'GET' });
     if (!result.ok) return storageError(res, result);
     return privateAuth.json(res, 200, { conversations: Array.isArray(result.data) ? result.data : [] });
   }
@@ -81,19 +81,19 @@ module.exports = async function chats(req, res) {
       const lookup = new URLSearchParams({
         select: 'id,title,created_at,updated_at',
         id: `eq.${conversationId}`,
-        owner_id: `eq.${owner.id}`,
+        owner_id: `eq.${user.id}`,
         limit: '1'
       });
-      const found = await databaseRequest(owner, safePath('/rest/v1/ari_conversations', lookup), { method: 'GET' });
+      const found = await databaseRequest(user, safePath('/rest/v1/ari_conversations', lookup), { method: 'GET' });
       if (!found.ok) return storageError(res, found);
       conversation = Array.isArray(found.data) ? found.data[0] : null;
       if (!conversation) return privateAuth.json(res, 404, { error: 'conversation_not_found' });
     } else {
       const title = question.replace(/\s+/g, ' ').slice(0, 96) || 'New chat';
-      const created = await databaseRequest(owner, '/rest/v1/ari_conversations?select=id,title,created_at,updated_at', {
+      const created = await databaseRequest(user, '/rest/v1/ari_conversations?select=id,title,created_at,updated_at', {
         method: 'POST',
         headers: { Prefer: 'return=representation' },
-        body: JSON.stringify({ owner_id: owner.id, title })
+        body: JSON.stringify({ owner_id: user.id, title })
       });
       if (!created.ok) return storageError(res, created);
       conversation = Array.isArray(created.data) ? created.data[0] : null;
@@ -110,19 +110,19 @@ module.exports = async function chats(req, res) {
       model: String(metadata.model || 'local').slice(0, 120),
       source: String(metadata.source || 'unknown').slice(0, 40)
     };
-    const inserted = await databaseRequest(owner, '/rest/v1/ari_messages', {
+    const inserted = await databaseRequest(user, '/rest/v1/ari_messages', {
       method: 'POST',
       headers: { Prefer: 'return=minimal' },
       body: JSON.stringify([
-        { owner_id: owner.id, conversation_id: conversationId, role: 'user', content: question, metadata: {} },
-        { owner_id: owner.id, conversation_id: conversationId, role: 'assistant', content: answer, metadata: safeMetadata }
+        { owner_id: user.id, conversation_id: conversationId, role: 'user', content: question, metadata: {} },
+        { owner_id: user.id, conversation_id: conversationId, role: 'assistant', content: answer, metadata: safeMetadata }
       ])
     });
     if (!inserted.ok) return storageError(res, inserted);
 
     const updatedAt = new Date().toISOString();
-    const updateQuery = new URLSearchParams({ id: `eq.${conversationId}`, owner_id: `eq.${owner.id}` });
-    const updated = await databaseRequest(owner, safePath('/rest/v1/ari_conversations', updateQuery), {
+    const updateQuery = new URLSearchParams({ id: `eq.${conversationId}`, owner_id: `eq.${user.id}` });
+    const updated = await databaseRequest(user, safePath('/rest/v1/ari_conversations', updateQuery), {
       method: 'PATCH',
       headers: { Prefer: 'return=minimal' },
       body: JSON.stringify({ updated_at: updatedAt })
@@ -138,8 +138,8 @@ module.exports = async function chats(req, res) {
   if (action === 'delete') {
     const conversationId = String(body.conversation_id || '').trim();
     if (!UUID_RE.test(conversationId)) return privateAuth.json(res, 400, { error: 'invalid_conversation_id' });
-    const query = new URLSearchParams({ id: `eq.${conversationId}`, owner_id: `eq.${owner.id}` });
-    const result = await databaseRequest(owner, safePath('/rest/v1/ari_conversations', query), {
+    const query = new URLSearchParams({ id: `eq.${conversationId}`, owner_id: `eq.${user.id}` });
+    const result = await databaseRequest(user, safePath('/rest/v1/ari_conversations', query), {
       method: 'DELETE',
       headers: { Prefer: 'return=representation' }
     });

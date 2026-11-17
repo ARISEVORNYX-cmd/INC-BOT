@@ -5,16 +5,16 @@ const { test } = require('node:test');
 const chats = require('../api/chats');
 const migration = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../../supabase/migrations/20261116234854_create_ari_personal_memory.sql'), 'utf8');
 
-const OWNER_ID = '6dbe2e9e-b674-40ac-a192-8c7de8542091';
+const USER_A_ID = '6dbe2e9e-b674-40ac-a192-8c7de8542091';
+const OTHER_USER_ID = 'cdb6f671-89b2-49be-a419-44b7672078e0';
 const CONVERSATION_ID = 'c58be96e-197b-43dd-b92e-6718b322ee0f';
-const ENV_KEYS = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_PUBLISHABLE_KEY', 'ARI_ALLOWED_EMAIL', 'ARI_ALLOWED_ORIGIN', 'NODE_ENV'];
+const ENV_KEYS = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_PUBLISHABLE_KEY', 'ARI_ALLOWED_ORIGIN', 'NODE_ENV'];
 
 async function withEnv(callback) {
   const saved = Object.fromEntries(ENV_KEYS.map(key => [key, process.env[key]]));
   Object.assign(process.env, {
     SUPABASE_URL: 'https://ari-test.supabase.co',
     SUPABASE_ANON_KEY: 'test-public-key',
-    ARI_ALLOWED_EMAIL: 'owner@example.com',
     ARI_ALLOWED_ORIGIN: 'https://ari.example',
     NODE_ENV: 'production'
   });
@@ -56,7 +56,7 @@ function request({ method = 'GET', query = {}, body = {}, authenticated = true }
       host: 'ari.example',
       'x-forwarded-proto': 'https',
       origin: 'https://ari.example',
-      cookie: authenticated ? 'ari_access=owner-access-token' : ''
+      cookie: authenticated ? 'ari_access=user-a-access-token' : ''
     }
   };
 }
@@ -69,7 +69,7 @@ async function invoke(options = {}) {
 
 function defaultFetch(url, options) {
   const target = String(url);
-  if (target.endsWith('/auth/v1/user')) return response(200, { id: OWNER_ID, email: 'owner@example.com' });
+  if (target.endsWith('/auth/v1/user')) return response(200, { id: USER_A_ID, email: 'user-a@example.net' });
   throw new Error(`Unexpected request ${target}`);
 }
 
@@ -83,12 +83,12 @@ test('chat API rejects signed-out requests before touching private storage', asy
   }));
 });
 
-test('conversation list is filtered to the verified owner and marked no-store', async () => {
+test('conversation list is filtered to the verified signed-in account and marked no-store', async () => {
   await withEnv(() => withFetch(async (url, options) => {
     if (String(url).endsWith('/auth/v1/user')) return defaultFetch(url, options);
     assert.match(String(url), /\/rest\/v1\/ari_conversations\?/);
     assert.match(String(url), /owner_id=eq\./);
-    assert.equal(options.headers.Authorization, 'Bearer owner-access-token');
+    assert.equal(options.headers.Authorization, 'Bearer user-a-access-token');
     assert.equal(options.headers.apikey, 'test-public-key');
     return response(200, [{ id: CONVERSATION_ID, title: 'My plan', created_at: '2026-11-15T00:00:00Z', updated_at: '2026-11-15T00:01:00Z' }]);
   }, async () => {
@@ -100,13 +100,13 @@ test('conversation list is filtered to the verified owner and marked no-store', 
   }));
 });
 
-test('message history requires a UUID and only queries the signed-in owner conversation', async () => {
+test('message history requires a UUID and only queries the signed-in user’s conversation', async () => {
   await withEnv(() => withFetch(async (url, options) => {
     if (String(url).endsWith('/auth/v1/user')) return defaultFetch(url, options);
     assert.match(String(url), /\/rest\/v1\/ari_messages\?/);
     assert.match(String(url), /conversation_id=eq\./);
     assert.match(String(url), /owner_id=eq\./);
-    assert.equal(options.headers.Authorization, 'Bearer owner-access-token');
+    assert.equal(options.headers.Authorization, 'Bearer user-a-access-token');
     return response(200, [{ id: 'message-1', role: 'user', content: 'private question', created_at: '2026-11-15T00:01:00Z' }]);
   }, async () => {
     const bad = await invoke({ query: { id: 'not-a-uuid' } });
@@ -117,17 +117,50 @@ test('message history requires a UUID and only queries the signed-in owner conve
   }));
 });
 
-test('save turn creates one owner-scoped conversation and both messages; service role is never used', async () => {
+test('a second account cannot read or delete the first account’s conversation by guessing its UUID', async () => {
+  await withEnv(() => withFetch(async (url, options) => {
+    const target = String(url);
+    if (target.endsWith('/auth/v1/user')) {
+      return response(200, { id: OTHER_USER_ID, email: 'other@example.com' });
+    }
+    assert.equal(options.headers.Authorization, 'Bearer user-a-access-token');
+    assert.equal(options.headers.apikey, 'test-public-key');
+    assert.match(target, /owner_id=eq\./);
+    assert.match(target, new RegExp(`owner_id=eq\\.${OTHER_USER_ID}`));
+    assert.match(target, new RegExp(`(?:conversation_id|id)=eq\\.${CONVERSATION_ID}`));
+    if (target.includes('/rest/v1/ari_messages?')) {
+      return response(200, []); // Supabase RLS also hides the first user's rows.
+    }
+    if (target.includes('/rest/v1/ari_conversations?')) {
+      assert.equal(options.method, 'DELETE');
+      return response(200, []);
+    }
+    throw new Error(`Unexpected request ${target}`);
+  }, async () => {
+    const read = await invoke({ query: { id: CONVERSATION_ID } });
+    assert.equal(read.statusCode, 200);
+    assert.deepEqual(read.payload.messages, []);
+
+    const remove = await invoke({
+      method: 'POST',
+      body: { action: 'delete', conversation_id: CONVERSATION_ID }
+    });
+    assert.equal(remove.statusCode, 404);
+    assert.equal(remove.payload.error, 'conversation_not_found');
+  }));
+});
+
+test('save turn creates one account-scoped conversation and both messages; service role is never used', async () => {
   await withEnv(() => withFetch(async (url, options) => {
     const target = String(url);
     if (target.endsWith('/auth/v1/user')) return defaultFetch(url, options);
     assert.equal(options.headers.apikey, 'test-public-key');
-    assert.equal(options.headers.Authorization, 'Bearer owner-access-token');
+    assert.equal(options.headers.Authorization, 'Bearer user-a-access-token');
     assert.doesNotMatch(options.headers.Authorization, /service_role/i);
     if (target.includes('/rest/v1/ari_conversations?select=')) {
       assert.equal(options.method, 'POST');
       const body = JSON.parse(options.body);
-      assert.equal(body.owner_id, OWNER_ID);
+      assert.equal(body.owner_id, USER_A_ID);
       assert.equal(body.title, 'Plan my new studio');
       return response(201, [{ id: CONVERSATION_ID, title: body.title, created_at: '2026-11-15T00:00:00Z', updated_at: '2026-11-15T00:00:00Z' }]);
     }
@@ -135,7 +168,7 @@ test('save turn creates one owner-scoped conversation and both messages; service
       const body = JSON.parse(options.body);
       assert.equal(body.length, 2);
       assert.deepEqual(body.map(item => item.role), ['user', 'assistant']);
-      assert.ok(body.every(item => item.owner_id === OWNER_ID && item.conversation_id === CONVERSATION_ID));
+      assert.ok(body.every(item => item.owner_id === USER_A_ID && item.conversation_id === CONVERSATION_ID));
       assert.equal(body[0].content, 'Plan my new studio');
       assert.equal(body[1].content, 'Start with a small brief.');
       return response(201, null);
@@ -156,7 +189,7 @@ test('save turn creates one owner-scoped conversation and both messages; service
   }));
 });
 
-test('delete is owner-filtered and input/oversize validation happens before a database write', async () => {
+test('delete is account-filtered and input/oversize validation happens before a database write', async () => {
   await withEnv(() => withFetch(async (url, options) => {
     if (String(url).endsWith('/auth/v1/user')) return defaultFetch(url, options);
     assert.match(String(url), /\/rest\/v1\/ari_conversations\?/);

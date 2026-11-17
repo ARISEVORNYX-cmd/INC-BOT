@@ -20,7 +20,7 @@
         <img class="avatar" src="/icons/ari-avatar.png" alt="Ari, fictional humanoid-style AI avatar">
         <span><strong>Ari</strong><small>PERSONAL STUDIO</small></span>
       </a>
-      <div class="privacy-chip"><span class="status-dot"></span><span>OWNER-ONLY SIGN-IN</span></div>
+      <div class="privacy-chip"><span class="status-dot"></span><span>PRIVATE ACCOUNT SIGN-IN</span></div>
     </header>
 
     <main>
@@ -28,11 +28,11 @@
         <div class="login-card">
           <p class="eyebrow">YOUR PRIVATE AI WORKSPACE</p>
           <h1 id="loginTitle">Namaste, main Ari hoon.</h1>
-          <p class="login-intro">Yeh tumhara personal studio companion hai. Sign-in ke baad hi chats aur workspace khulenge; Ari AI hai, insaan nahi.</p>
+          <p class="login-intro">Apna free account email se banao. Sign-in ke baad tumhare chats sirf tumhare account ko dikhte hain; Ari AI hai, insaan nahi.</p>
 
           <form id="emailForm" class="auth-form" novalidate>
-            <label for="ownerEmail">Owner email</label>
-            <input id="ownerEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Apna owner email" required>
+            <label for="accountEmail">Email address</label>
+            <input id="accountEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Apna email address" required>
             <button id="sendLinkButton" class="primary-button" type="submit" disabled>Sign-in link bhejo <span aria-hidden="true">→</span></button>
           </form>
 
@@ -45,7 +45,7 @@
           <p id="authStatus" class="status-message" role="status" aria-live="polite">Private sign-in check ho raha hai…</p>
           <div class="privacy-note">
             <span aria-hidden="true">✦</span>
-            <p>Owner email allowlist + secure server session. Passwords ya payment details chat mein mat bhejo. Cloud model enable hone par prompt us model provider tak ja sakta hai.</p>
+            <p>Email link + secure server session; saved chats are isolated per account with Supabase row-level security. Passwords ya payment details chat mein mat bhejo. Cloud model enable hone par prompt us model provider tak ja sakta hai.</p>
           </div>
           <p class="fine-print">Free hosting aur AI providers par quotas/terms ho sakte hain. Unlimited service ka promise nahi hai.</p>
         </div>
@@ -73,7 +73,7 @@
             </div>
             <p id="memoryStatus" class="memory-status">Saved chats check ho rahe hain…</p>
             <nav id="conversationList" class="conversation-list" aria-label="Conversation list"></nav>
-            <div class="storage-note"><span aria-hidden="true">▣</span><span>Chats tumhare Supabase account mein owner-only row security ke saath store hote hain.</span></div>
+            <div class="storage-note"><span aria-hidden="true">▣</span><span>Chats tumhare Supabase account mein user-scoped row security ke saath store hote hain; doosre accounts ka data tumhe nahi dikhna chahiye.</span></div>
           </aside>
 
           <section class="chat-panel" aria-label="Ari chat">
@@ -128,7 +128,7 @@
         </details>
 
         <section class="trust-footer" aria-label="Privacy and status">
-          <div><span class="trust-icon">⌑</span><p><strong>Private account gate</strong><br>Protected API + owner allowlist. Login screen public ho sakti hai; chat data login ke bina nahi milta.</p></div>
+          <div><span class="trust-icon">⌑</span><p><strong>Private account gate</strong><br>Protected APIs + per-user row security. Login screen public hai; chat data sirf sign-in ke baad tumhare account ko milta hai.</p></div>
           <div><span class="trust-icon">◌</span><p><strong>Honest AI status</strong><br>Free model key configured na ho to Ari local fallback use karega. Free tiers ki quotas aur provider policies hoti hain.</p></div>
           <div><span class="trust-icon">◇</span><p><strong>Agency phase two</strong><br>50–70 role profiles planned hain; woh abhi running AI agents nahi hain.</p></div>
         </section>

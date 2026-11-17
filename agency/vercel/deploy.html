@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#11111a">
-<meta name="description" content="Ari's honest, owner-only hosting and verification status.">
+<meta name="description" content="Ari's honest account-based access and verification status.">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
 <title>Ari Launchpad — Private Hosting Status</title>
 <link rel="stylesheet" href="/deploy.css">
@@ -17,34 +17,34 @@
 </header>
 <main>
   <section class="hero" aria-labelledby="hero-title">
-    <div class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span> Owner-only hosting &amp; verification</div>
+    <div class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span> Account-based hosting &amp; verification</div>
     <h1 id="hero-title">Private by<br><span>design.</span></h1>
-    <p class="hero-copy">This page reports the real setup state. Ari's APIs require the allowlisted owner session; live sign-in and account-isolation checks still need to be completed in the browser.</p>
-    <div class="hero-bottom"><div class="hero-note"><strong>Workspace:</strong> Ari Personal AI &nbsp;·&nbsp; <strong>Next:</strong> verify owner sign-in</div><a class="button" href="./index.html">Open Ari <span aria-hidden="true">→</span></a></div>
+    <p class="hero-copy">This page reports the real setup state. Any confirmed Ari account can sign in; live PKCE login and cross-account isolation still need to be checked in a browser.</p>
+    <div class="hero-bottom"><div class="hero-note"><strong>Workspace:</strong> Ari Personal AI &nbsp;·&nbsp; <strong>Next:</strong> verify account sign-in</div><a class="button" href="./index.html">Open Ari <span aria-hidden="true">→</span></a></div>
   </section>
 
   <section class="stats" aria-label="Project status summary">
     <article class="stat"><div class="stat-label">Agent activity</div><div class="stat-value amber">Off</div><div class="stat-sub">Specialist profiles are not running agents</div></article>
-    <article class="stat"><div class="stat-label">Local checks</div><div class="stat-value mint">41 / 41 passed</div><div class="stat-sub">Vercel tests; auth/provider calls mocked</div></article>
-    <article class="stat"><div class="stat-label">Owner sign-in</div><div class="stat-value">Not tested</div><div class="stat-sub">No Auth account exists yet</div></article>
+    <article class="stat"><div class="stat-label">Local checks</div><div class="stat-value mint">51 / 51 passed</div><div class="stat-sub">Vercel tests; auth/provider calls mocked</div></article>
+    <article class="stat"><div class="stat-label">Account sign-in</div><div class="stat-value">Not live-tested</div><div class="stat-sub">PKCE flow covered by local tests only</div></article>
     <article class="stat"><div class="stat-label">Hosting domain</div><div class="stat-value">Vercel</div><div class="stat-sub">Vercel account protection may appear first</div></article>
   </section>
 
   <section class="grid" id="sequence" aria-label="Hosting sequence and live address">
     <article class="panel">
-      <div class="panel-head"><div><h2>Setup &amp; verification</h2><p class="panel-intro">Cloud configuration is not the same as a completed live security test.</p></div><span class="tag">OWNER-ONLY</span></div>
+      <div class="panel-head"><div><h2>Setup &amp; verification</h2><p class="panel-intro">Cloud configuration is not the same as a completed live security test.</p></div><span class="tag">ACCOUNT-BASED</span></div>
       <div class="steps">
         <div class="step done"><div class="step-icon" aria-hidden="true">✓</div><div><div class="step-title">Private chat schema</div><div class="step-desc">Supabase migration applied. Both tables have RLS enabled; the conversation and message tables are empty.</div></div><div class="step-state">Configured</div></div>
-        <div class="step done"><div class="step-icon" aria-hidden="true">✓</div><div><div class="step-title">Owner and origin allowlists</div><div class="step-desc">Production environment and exact Supabase redirect origin are configured for the Ari Vercel domain.</div></div><div class="step-state">Configured</div></div>
-        <div class="step done"><div class="step-icon" aria-hidden="true">✓</div><div><div class="step-title">Local build checks</div><div class="step-desc">The Vercel test suite passes. These mock tests do not prove live sign-in or database isolation.</div></div><div class="step-state">41 passed</div></div>
-        <div class="step"><div class="step-icon" aria-hidden="true">4</div><div><div class="step-title">Owner sign-in &amp; access check</div><div class="step-desc">Request the one-time email link, open it in this same browser, then verify signed-out and non-owner access.</div></div><div class="step-state">Pending</div></div>
+        <div class="step done"><div class="step-icon" aria-hidden="true">✓</div><div><div class="step-title">Supabase Auth and redirect origin</div><div class="step-desc">Email signup is enabled; the exact Supabase redirect origin is configured for the Ari Vercel domain.</div></div><div class="step-state">Configured</div></div>
+        <div class="step done"><div class="step-icon" aria-hidden="true">✓</div><div><div class="step-title">Local security checks</div><div class="step-desc">51 Vercel tests pass, including PKCE exchange and cross-account access tests. These mocks do not prove live isolation.</div></div><div class="step-state">51 passed</div></div>
+        <div class="step"><div class="step-icon" aria-hidden="true">4</div><div><div class="step-title">Account sign-in &amp; isolation check</div><div class="step-desc">Request the one-time email link in this browser; then verify a second account cannot read the first account's chat.</div></div><div class="step-state">Pending</div></div>
       </div>
     </article>
 
     <article class="panel preview" aria-labelledby="preview-title">
       <div class="panel-head"><div><h2 id="preview-title">Ari website</h2><p class="panel-intro">The existing Vercel domain is assigned to this project.</p></div><span class="tag"><span class="dot" aria-hidden="true"></span>CHECK ACCESS</span></div>
-      <div class="preview-box"><div class="empty"><div class="preview-icon" aria-hidden="true">↗</div><strong>Open the private Ari app</strong><p>Vercel access protection may require your Vercel account before Ari's separate owner magic-link sign-in.</p><a class="button" href="https://inc-ari-agency.vercel.app/">Open inc-ari-agency.vercel.app</a></div></div>
-      <div class="preview-footer"><span>Live owner test</span><span class="locked">◉ &nbsp;Not yet verified</span></div>
+      <div class="preview-box"><div class="empty"><div class="preview-icon" aria-hidden="true">↗</div><strong>Open the Ari app</strong><p>Vercel currently reports SSO protection for non-custom domains. Public free accounts will not be reachable until this hosting gate is made public.</p><a class="button" href="https://inc-ari-agency.vercel.app/">Open inc-ari-agency.vercel.app</a></div></div>
+      <div class="preview-footer"><span>Live account test</span><span class="locked">◉ &nbsp;Not yet verified</span></div>
     </article>
   </section>
 
@@ -52,26 +52,26 @@
     <div class="panel-head"><div><h2 id="free-limits-title">Free-tier reality check</h2><p class="panel-intro">Free hosting and AI have quotas, availability limits, and provider terms—not unlimited service.</p></div><span class="tag">QUOTAS APPLY</span></div>
     <div class="steps">
       <div class="step"><div class="step-icon" aria-hidden="true">V</div><div><div class="step-title">Vercel Hobby</div><div class="step-desc">The existing project is configured for the free-first setup; usage caps and platform rules still apply.</div></div><div class="step-state">Configured</div></div>
-      <div class="step"><div class="step-icon" aria-hidden="true">S</div><div><div class="step-title">Supabase</div><div class="step-desc">The database is healthy and owner-scoped tables are ready. Free-tier availability is not guaranteed to be always-on.</div></div><div class="step-state">RLS enabled</div></div>
+      <div class="step"><div class="step-icon" aria-hidden="true">S</div><div><div class="step-title">Supabase</div><div class="step-desc">The database is healthy; chat tables use per-user owner_id policies tied to auth.uid(). Free-tier availability is not guaranteed to be always-on.</div></div><div class="step-state">RLS enabled</div></div>
       <div class="step"><div class="step-icon" aria-hidden="true">AI</div><div><div class="step-title">AI provider</div><div class="step-desc">Production selects Ari's local deterministic fallback with <code>AI_PROVIDER=local</code>. Vercel lists a sensitive <code>OPENROUTER_API_KEY</code> variable, but its value has not been inspected; the local provider setting keeps the app from invoking it.</div></div><div class="step-state">Local provider</div></div>
     </div>
   </section>
 
   <section class="blocker" id="connection-status" aria-labelledby="blocker-title">
     <div class="warn-icon" aria-hidden="true">!</div>
-    <div><h2 id="blocker-title">What still needs your check?</h2><p>The deployment and local tests do not exercise your inbox or prove account isolation. Sign in with the allowlisted owner email, open the one-time link in the same browser, then confirm that a signed-out session is rejected and that no other account can read Ari's chat rows. After the first owner account is verified, disable further Supabase sign-ups.</p><span class="host">No sign-in link has been sent by this setup process.</span></div>
+    <div><h2 id="blocker-title">What still needs your check?</h2><p>The deployment and local tests do not exercise a real inbox or prove live isolation. Test the PKCE link in the same browser, then use a second account to try reading and deleting a chat by guessing its ID. Signed-out requests must fail. Supabase email signup is enabled, but Vercel SSO still gates the .vercel.app domain, so public account access is not live yet.</p><span class="host">No live login or cross-account test has been performed.</span></div>
   </section>
 
   <section class="panel log" aria-labelledby="log-title">
     <div class="panel-head"><div><h2 id="log-title">Recent setup</h2><p class="panel-intro">Only completed configuration and checks are listed.</p></div><span class="tag">NO PERSONAL DATA</span></div>
     <div class="log-list">
-      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Owner-scoped chat schema applied<small>RLS verified on both tables · 0 conversation/message rows</small></div></div>
-      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Production Auth and origin configured<small>Single owner allowlist · exact Vercel origin · local provider · key value unverified</small></div></div>
-      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Local app tests passed<small>41 Vercel tests · auth/provider calls mocked; no live AI call</small></div></div>
+      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Per-account chat schema applied<small>RLS verifies auth.uid() on both tables · live second-account check pending</small></div></div>
+      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Supabase Auth and origin configured<small>Email signup enabled · exact Vercel origin · local provider</small></div></div>
+      <div class="log-row"><span class="log-mark" aria-hidden="true"></span><div>Local app tests passed<small>51 Vercel tests · auth/provider calls mocked; no live AI call</small></div></div>
     </div>
   </section>
 </main>
-<footer class="footer"><span>Ari Launchpad · hosting configured · owner verification pending</span><a href="./index.html">Back to Personal Ari →</a></footer>
+<footer class="footer"><span>Ari Launchpad · account access configured · public hosting gate pending</span><a href="./index.html">Back to Personal Ari →</a></footer>
 </div>
 </body>
 </html>

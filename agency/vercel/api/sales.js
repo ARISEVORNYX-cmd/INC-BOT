@@ -46,7 +46,7 @@ module.exports=async(req,res)=>{
   if(req.method==='OPTIONS')return res.status(204).end();
   if(req.method!=='GET'&&req.method!=='POST')return privateAuth.json(res,405,{error:'method_not_allowed'});
   if(req.method==='POST'&&!privateAuth.requestIsSameOrigin(req))return privateAuth.json(res,403,{error:'same_origin_required'});
-  const owner=await privateAuth.requireOwner(req,res);if(!owner)return;
+  const user=await privateAuth.requireUser(req,res);if(!user)return;
   let body={};
   if(req.method==='POST'){
     const parsed=privateAuth.parseJsonBody(req,1000000);
