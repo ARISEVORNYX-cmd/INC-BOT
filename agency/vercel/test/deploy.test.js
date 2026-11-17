@@ -10,30 +10,28 @@ const html = fs.readFileSync(path.join(pageRoot, 'deploy.html'), 'utf8');
 const css = fs.readFileSync(path.join(pageRoot, 'deploy.css'), 'utf8');
 const vercelConfig = JSON.parse(fs.readFileSync(path.join(pageRoot, 'vercel.json'), 'utf8'));
 
-test('agent launch dashboard clearly reports the real blocked and preview-only state', () => {
-  assert.match(html, /Ari Launchpad — Project & Deploy Status/);
-  assert.match(html, /Not connected/);
-  assert.match(html, /does not allow outbound requests to Antideploy/);
-  assert.match(html, /No approval link or device code was requested/);
-  assert.match(html, /Nothing deployed yet/);
-  assert.match(html, /no live deployment/i);
-  assert.match(html, /50–70 specialist profiles/);
-  assert.match(html, /39 \/ 39 passed/);
-  assert.match(html, /39 Vercel tests \+ 17 agency tests/);
-  assert.match(html, /39 tests · auth\/provider calls mocked; no live AI call/);
-  assert.match(html, /Free-tier reality check/);
-  assert.match(html, /may pause after one week of inactivity/);
+test('Ari hosting dashboard reports configured privacy setup and the unverified owner login honestly', () => {
+  assert.match(html, /Ari Launchpad — Private Hosting Status/);
+  assert.match(html, /Owner-only hosting/);
+  assert.match(html, /41 \/ 41 passed/);
+  assert.match(html, /No Auth account exists yet/);
+  assert.match(html, /RLS enabled/);
+  assert.match(html, /live sign-in or database isolation/);
+  assert.match(html, /No sign-in link has been sent/);
   assert.match(html, /not unlimited service/i);
+  assert.doesNotMatch(html, /Nothing deployed yet|NO CLOUD WRITES|Antideploy/);
 });
 
-test('agent launch dashboard offers navigation back to Ari and a responsive mobile layout', () => {
+test('hosting dashboard links to the assigned domain and keeps responsive navigation', () => {
+  assert.match(html, /href="https:\/\/inc-ari-agency\.vercel\.app\/"/);
   assert.match(html, /href="\.\/index\.html"/);
   assert.match(css, /@media\(max-width:540px\)/);
   assert.match(html, /name="viewport"/);
   assert.doesNotMatch(html, /<iframe\b/i);
 });
 
-test('Vercel routes dashboard assets and applies restrictive same-origin security headers', () => {
+test('Vercel routes app assets, applies security headers, and has no invalid public field', () => {
+  assert.equal(Object.hasOwn(vercelConfig, 'public'), false);
   assert.ok(vercelConfig.routes.some(route => route.src === '/deploy/?' && route.dest === '/deploy.html'));
   assert.ok(vercelConfig.routes.some(route => route.src === '/deploy.html' && route.dest === '/deploy.html'));
   assert.ok(vercelConfig.routes.some(route => route.src === '/styles.css' && route.dest === '/styles.css'));
